@@ -1,0 +1,85 @@
+<mat-form-field>
+    <input matInput type='number' [(ngModel)]="settings.propPrice" placeholder="Цена квартиры"/>
+</mat-form-field>
+
+<mat-form-field>
+    <input matInput type='number' [(ngModel)]="settings.currMoney" placeholder="Денег в наличии"/>
+</mat-form-field>
+
+<mat-form-field>
+    <input matInput type='number' [(ngModel)]="settings.canPayM" placeholder="Могу платить в месяц"/>
+</mat-form-field>
+
+<mat-form-field>
+    <input matInput type='number' [(ngModel)]="settings.mortRateY" placeholder="Ставка по ипотеке, % в год" />
+</mat-form-field>
+
+<mat-form-field>
+    <input matInput type='number' [(ngModel)]="settings.investRateY" placeholder="Ставка по вкладу, % в год" />
+</mat-form-field>
+
+<mat-form-field>
+    <input matInput type='number' [(ngModel)]="settings.rentM" placeholder="Цена аренды в месяц" />
+</mat-form-field>
+
+<mat-form-field>
+    <input matInput type='number' [(ngModel)]="settings.propInflationY" placeholder="Удорожание квартиры, % в год" />
+</mat-form-field>
+
+<mat-form-field>
+    <input matInput type='number' [(ngModel)]="settings.rentInflationY" placeholder="Удорожание аренды, % в год" />
+</mat-form-field>
+
+<mat-form-field>
+    <input matInput type='number' [(ngModel)]="settings.comFeesInflationY" placeholder="Удорожание коммуналки, % в год" />
+</mat-form-field>
+
+<mat-form-field>
+    <input matInput type='number' [(ngModel)]="settings.payInflationY" placeholder="Увеличение платежа, % в год" />
+</mat-form-field>
+
+<mat-form-field>
+    <input matInput type='number' [(ngModel)]="settings.comFeesM" placeholder="Коммунальный платежи без счетчиков, мес." />
+</mat-form-field>
+
+<mat-form-field>
+    <input matInput type='number' [(ngModel)]="settings.propTaxY" placeholder="Налог, страховка, в год" />
+</mat-form-field>
+
+<div class='resultsText'>{{resultText}}</div>
+
+
+<div class='header'>
+    <span>номер месяца</span>
+    <span>платеж в тело кредита</span>
+    <span>платеж в счет процентов</span>
+    <span>остаток тела кредита</span>
+    <span>выплачено из тела кредита</span>
+    <span>выплачено процентов</span>
+    <span>коммуналка</span>
+    <span>налоги</span>
+    <span>аренда за месяц</span>
+    <span>выплачено в счет аренды</span>
+    <span>сумма на вкладе</span>
+    <span>получено процентами по вкладу</span>
+    <span>цена квартиры</span>
+    <span>максимальная сумма трат</span>
+</div>
+
+<div class='row' *ngFor="let item of months">
+    <span>{{item.monthNumber | number:'1.0-0'}}</span>
+    <span>{{item.mortPayBody | number:'1.0-0'}}</span>
+    <span>{{item.mortPayInterest | number:'1.0-0'}}</span>
+    <span>{{item.mortBodyRemain | number:'1.0-0'}}</span>
+    <span>{{item.mortPaidBody | number:'1.0-0'}}</span>
+    <span>{{item.mortPaidInterest | number:'1.0-0'}}</span>
+    <span>{{item.comFees | number:'1.0-0'}}</span>
+    <span>{{item.propTax | number:'1.0-0'}}</span>
+    <span>{{item.rentPay | number:'1.0-0'}}</span>
+    <span>{{item.rentPaid | number:'1.0-0'}}</span>
+    <span>{{item.investAmount | number:'1.0-0'}}</span>
+    <span>{{item.investInterest | number:'1.0-0'}}</span>
+    <span>{{item.propPrice | number:'1.0-0'}}</span>
+    <span>{{item.canPay | number:'1.0-0'}}</span>
+
+</div>
