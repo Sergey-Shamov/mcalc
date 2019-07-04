@@ -33,12 +33,15 @@
         }
         else{
             this.monthNumber = prev.monthNumber + 1;
-
+            
+            // Индексация
             this.canPay = prev.canPay * (1 + settings.payInflationM);
+            this.propPrice = prev.propPrice * (1 + settings.propInflationM);
 
             this.comFees = prev.comFees * (1 + settings.comFeesInflationM);
             this.propTax = settings.propTaxM;
 
+            // Расчет ипотеки
             this.mortPayInterest = prev.mortBodyRemain * settings.mortRateM;
             this.mortPayBody = Math.min(this.canPay - this.mortPayInterest - this.comFees - this.propTax, prev.mortBodyRemain);
 
@@ -46,22 +49,21 @@
             this.mortPaidBody = prev.mortPaidBody + this.mortPayBody;
             this.mortPaidInterest = prev.mortPaidInterest + this.mortPayInterest;
 
+            this.mortOverpay = prev.mortOverpay + this.mortPayInterest + this.comFees + this.propTax;
+
+            // Расчет аренды
             this.rentPay = prev.rentPay * (1 + settings.rentInflationM);
             this.rentPaid = prev.rentPaid + this.rentPay;
 
             this.investInterest = prev.investAmount * settings.investRateM;
             this.investAmount = prev.investAmount + this.investInterest + (this.canPay - this.rentPay);
-
-            this.propPrice = prev.propPrice * (1 + settings.propInflationM);
-
-            this.mortOverpay = prev.mortOverpay + this.mortPayInterest + this.comFees + this.propTax;
         }
     }
 
     private Initialize(settings : Settings){
         this.monthNumber = 1;
 
-        this.canPay = settings.canPayM * (1 + settings.payInflationM);
+        this.canPay = settings.canPayM;
         this.mortPayInterest = (settings.propPrice - settings.currMoney) * settings.mortRateM;
         console.log(settings.propPrice - settings.currMoney); 
         this.comFees = settings.comFeesM;
@@ -75,7 +77,7 @@
 
         this.investInterest = settings.currMoney * settings.investRateM;
         this.investAmount = settings.currMoney + this.investInterest + (this.canPay - this.rentPay);
-        this.propPrice = settings.propPrice * (1 + settings.propInflationM);
+        this.propPrice = settings.propPrice;
 
         this.mortOverpay = this.mortPayInterest + this.comFees + this.propTax;
     }
