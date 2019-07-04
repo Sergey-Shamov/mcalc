@@ -21,30 +21,33 @@ export class AppComponent {
     do {
       stat = MonthlyStats.Create(stat, this.settings);
       result.push(stat);
-    } while (!stat.IsDone() || result.length > 360)
-    const lastRow = result.pop();
+    } while ((!stat.IsDone()) && (result.length < 360))
 
-    if (result.length > 360)
+    const resCount = result.length;
+    if (resCount > 360)
     {
       this.resultText = "Ипотека займет более 30 лет. Возможна ошибка в исходных данных."
     } else{
+        const lastRow = result[resCount - 1];
         const mortRow = result.find(a => a.mortBodyRemain == 0 && lastRow.mortPayBody != 0 && lastRow.mortPayInterest != 0);
         const investRow = result.find(a => a.investAmount > a.propPrice);
 
         if (mortRow == undefined || investRow == undefined) this.resultText += "Не удается завершить расчет на основе заданных параметров";
         else{
-        if (lastRow.mortPayBody == 0 && lastRow.mortPayInterest == 0) this.resultText = "Ипотека быстрее. /n"; 
-        else this.resultText = "Накопить быстрее. /n";
+          this.resultText = "Быстрее "
+          if (lastRow.mortPayBody == 0 && lastRow.mortPayInterest == 0) this.resultText += "платить ипотеку. \n"; 
+          else this.resultText += "накопить.\n";
 
-        this.resultText += "Ипотека займет " + mortRow.monthNumber + " месяцев./n";
-        this.resultText += "Накопление займет " + investRow.monthNumber + " месяцев./n";
+          this.resultText += "Ипотека займет " + mortRow.monthNumber + " месяцев.\n";
+          this.resultText += "Накопление займет " + investRow.monthNumber + " месяцев.\n\n";
 
-        if (Math.abs(mortRow.mortOverpay - investRow.rentPaid) > (Math.min(mortRow.mortOverpay, investRow.rentPaid) * 0.05)) this.resultText += "Расходы примерно равны/n";
-        else if (mortRow.mortOverpay > investRow.rentPaid) this.resultText += "Копить выгоднее/n";
-          else this.resultText += "Ипотека выгоднее/n";
-        
-        this.resultText += "Разница составляет " + Math.abs(mortRow.mortOverpay - investRow.rentPaid) + " руб.";
-      }
+          if (Math.abs(mortRow.mortOverpay - investRow.rentPaid) <= (Math.min(mortRow.mortOverpay, investRow.rentPaid) * 0.05)) this.resultText += "Расходы примерно равны\n";
+          else if (mortRow.mortOverpay > investRow.rentPaid) this.resultText += "Выгоднее накопить.\n";
+            else this.resultText += "Выгоднее взять ипотеку.\n";
+          
+          this.resultText += "Разница составляет " + (Math.abs(mortRow.mortOverpay - investRow.rentPaid)).toLocaleString(undefined, {maximumFractionDigits: 0}) + " руб. ";
+          this.resultText += "в пользу " + (mortRow.mortOverpay > investRow.rentPaid ? "накопления" : "ипотеки");
+        }
     }
 
     return result;
