@@ -29,8 +29,8 @@ export class AppComponent {
       this.resultText = "Ипотека займет более 30 лет. Возможна ошибка в исходных данных."
     } else{
         const lastRow = result[resCount - 1];
-        const mortRow = result.find(a => a.mortBodyRemain == 0 && lastRow.mortPayBody != 0 && lastRow.mortPayInterest != 0);
-        const investRow = result.find(a => a.investAmount > a.propPrice);
+        const mortRow = result.find(a => a.mortBodyRemain == 0 && a.mortPayBody != 0 && a.mortPayInterest != 0);
+        const investRow = result.find(a => a.investAmount >= a.propPrice);
 
         if (mortRow == undefined || investRow == undefined) this.resultText += "Не удается завершить расчет на основе заданных параметров";
         else{
