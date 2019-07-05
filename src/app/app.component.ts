@@ -35,18 +35,17 @@ export class AppComponent {
         if (mortRow == undefined || investRow == undefined) this.resultText += "Не удается завершить расчет на основе заданных параметров";
         else{
           this.resultText = "Быстрее "
-          if (lastRow.mortPayBody == 0 && lastRow.mortPayInterest == 0) this.resultText += "платить ипотеку. \n"; 
-          else this.resultText += "накопить.\n";
+          if (lastRow.mortPayBody == 0 && lastRow.mortPayInterest == 0) this.resultText += "выплатить ипотеку"; 
+          else this.resultText += "накопить";
+          this.resultText += ", ";
+          if (Math.abs(mortRow.mortOverpay - investRow.rentPaid) <= (Math.min(mortRow.mortOverpay, investRow.rentPaid) * 0.05)) this.resultText += "расходы примерно равны\n";
+          else if (mortRow.mortOverpay > investRow.rentPaid) this.resultText += "выгоднее накопить.";
+            else this.resultText += "выгоднее взять ипотеку.";
+          this.resultText += "\n\n";
 
-          this.resultText += "Ипотека займет " + mortRow.monthNumber + " месяцев.\n";
-          this.resultText += "Накопление займет " + investRow.monthNumber + " месяцев.\n\n";
-
-          if (Math.abs(mortRow.mortOverpay - investRow.rentPaid) <= (Math.min(mortRow.mortOverpay, investRow.rentPaid) * 0.05)) this.resultText += "Расходы примерно равны\n";
-          else if (mortRow.mortOverpay > investRow.rentPaid) this.resultText += "Выгоднее накопить.\n";
-            else this.resultText += "Выгоднее взять ипотеку.\n";
-          
-          this.resultText += "Разница составляет " + (Math.abs(mortRow.mortOverpay - investRow.rentPaid)).toLocaleString(undefined, {maximumFractionDigits: 0}) + " руб. ";
-          this.resultText += "в пользу " + (mortRow.mortOverpay > investRow.rentPaid ? "накопления" : "ипотеки");
+          this.resultText += "Вы выплатите ипотеку за " + this.monthsToString(mortRow.monthNumber) + "  и переплатите " + mortRow.mortOverpay.toLocaleString(undefined, {maximumFractionDigits: 0}) + "₽\n";
+          this.resultText += "Вы накопите на квартиру за " + this.monthsToString(investRow.monthNumber) + "  и переплатите " + investRow.rentPaid.toLocaleString(undefined, {maximumFractionDigits: 0}) + "₽\n";
+          this.resultText += (mortRow.mortOverpay > investRow.rentPaid ? "Копить" : "Ипотека") + " дешевле на " + (Math.abs(mortRow.mortOverpay - investRow.rentPaid)).toLocaleString(undefined, {maximumFractionDigits: 0}) + "₽";
         }
     }
 
@@ -59,6 +58,15 @@ export class AppComponent {
     const rateM = rateY / 12;
     const precalc = Math.pow(1 + rateM, termM)
     return body * (rateM * precalc) / (precalc - 1);
+  }
+
+  private monthsToString(months: number){
+    let result: string = "";
+    const years = Math.floor(months / 12);
+    if (years > 0) result += years + " лет";
+    const monthsLeft = months - (years * 12);
+    if (monthsLeft > 0) result += " " + monthsLeft + " месяцев";
+    return result;
   }
 
   private calcTerm(body: number, rate: number, payment: number) {
