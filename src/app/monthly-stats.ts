@@ -104,6 +104,7 @@
     public comFeesM : number = 2500;   // коммунальные платежи без счетчиков (фикс), в мес
     public propTaxY : number = 40000;   // налог, страховка, прочие платежи владения квартирой, в год
 
+    // Расчетные ежемесячные величины
     public get propInflationM() : number {return this.calcYtoM(this.propInflationY);}
     public get rentInflationM() : number {return this.calcYtoM(this.rentInflationY);}
     public get payInflationM() : number {return this.calcYtoM(this.payInflationY);}
@@ -111,8 +112,20 @@
     public get investRateM() : number {return this.calcYtoM(this.investRateY);}
     public get mortRateM() : number {return this.calcYtoM(this.mortRateY);}
     public get propTaxM() : number {return this.propTaxY / 12;}
+
+    // Расчетные подсказки
+    public get propPriceIn10Years() : number {return this.inflatePrice(this.propPrice, this.propInflationM, 120);}
+    public get rentIn10Years() : number {return this.inflatePrice(this.rentM, this.rentInflationM, 120);}
+    public get investmentIn10Years() : number {return this.inflatePrice(this.currMoney, this.investRateM, 120);}
+    public get canPayIn10Years() : number {return this.inflatePrice(this.canPayM, this.payInflationY / 100, 10);}
+    public get comFeesIn10Years() : number {return this.inflatePrice(this.comFeesM, this.comFeesInflationM, 120);}
+
+    // Рассчитать увеличение суммы по начальной сумме, ставке за 1 период и числу периодов
+    private inflatePrice(price : number, rate : number, length : number){
+        return price * Math.pow(1 + rate, length);
+    }
     
     private calcYtoM(y : number){
-        return y / 12 / 100;
+        return y / 12 / 100;    // TODO: помесячное увеличение даст больший итог чем погодовое, так что ставки не равны
     }
   }

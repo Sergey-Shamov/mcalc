@@ -1,79 +1,71 @@
-<table><tr><td>
-<mat-grid-list cols="3" rowHeight="80px">
-    <mat-grid-tile>
-        <mat-form-field>
-            <input matInput type='number' [(ngModel)]="settings.canPayM" placeholder="Могу платить в месяц"/>
-        </mat-form-field>
-    </mat-grid-tile>
 
-    <mat-grid-tile>
+    
+    
         <mat-form-field>
             <input matInput type='number' [(ngModel)]="settings.currMoney" placeholder="Денег в наличии"/>
         </mat-form-field>
-    </mat-grid-tile>
 
-    <mat-grid-tile>
+        <mat-form-field>
+            <input matInput type='number' [(ngModel)]="settings.investRateY" placeholder="Ставка по вкладу, % в год" />
+            <mat-hint>Через 10 лет на вкладе будет {{settings.investmentIn10Years | number:'1.0-0'}}</mat-hint>
+        </mat-form-field>
+    
+    <br/>
+    
+        <mat-form-field>
+            <input matInput type='number' [(ngModel)]="settings.canPayM" placeholder="Могу платить в месяц"/>
+        </mat-form-field>
+    
+        <mat-form-field>
+            <input matInput type='number' [(ngModel)]="settings.payInflationY" placeholder="Увеличение платежа, % в год" />
+            <mat-hint>Через 10 лет макс. платеж будет {{settings.canPayIn10Years | number:'1.0-0'}}</mat-hint>
+        </mat-form-field>
+    
+        <br/>    
+    
         <mat-form-field>
             <input matInput type='number' [(ngModel)]="settings.propPrice" placeholder="Цена квартиры"/>
         </mat-form-field>
-    </mat-grid-tile>
-
-    <mat-grid-tile>
+    
+        <mat-form-field>
+            <input matInput type='number' [(ngModel)]="settings.propInflationY" placeholder="Удорожание квартиры, % в год" />
+            <mat-hint>Через 10 лет квартира будет стоить {{settings.propPriceIn10Years | number:'1.0-0'}}</mat-hint>
+        </mat-form-field>
+    
+        <br/>
+    
         <mat-form-field>
             <input matInput type='number' [(ngModel)]="settings.mortRateY" placeholder="Ставка по ипотеке, % в год" />  
         </mat-form-field>
-    </mat-grid-tile>
-
-    <mat-grid-tile>
-        <mat-form-field>
-            <input matInput type='number' [(ngModel)]="settings.investRateY" placeholder="Ставка по вкладу, % в год" />
-        </mat-form-field>
-    </mat-grid-tile>
-
-    <mat-grid-tile>
-        <mat-form-field>
-            <input matInput type='number' [(ngModel)]="settings.rentM" placeholder="Цена аренды в месяц" />
-        </mat-form-field>
-    </mat-grid-tile>
-
-    <mat-grid-tile>
-        <mat-form-field>
-            <input matInput type='number' [(ngModel)]="settings.propInflationY" placeholder="Удорожание квартиры, % в год" />
-        </mat-form-field>
-    </mat-grid-tile>
-
-    <mat-grid-tile>
-        <mat-form-field>
-            <input matInput type='number' [(ngModel)]="settings.rentInflationY" placeholder="Удорожание аренды, % в год" />
-        </mat-form-field>
-    </mat-grid-tile>
-
-    <mat-grid-tile>
-        <mat-form-field>
-            <input matInput type='number' [(ngModel)]="settings.comFeesM" placeholder="Коммунальные платежи без счетчиков, мес." />
-        </mat-form-field>
-    </mat-grid-tile>
-
-    <mat-grid-tile>
-        <mat-form-field>
-            <input matInput type='number' [(ngModel)]="settings.comFeesInflationY" placeholder="Удорожание коммуналки, % в год" />
-        </mat-form-field>
-    </mat-grid-tile>
-
-    <mat-grid-tile>
+    
         <mat-form-field>
             <input matInput type='number' [(ngModel)]="settings.propTaxY" placeholder="Налог, страховка, в год" />
         </mat-form-field>
-    </mat-grid-tile>
-
-    <mat-grid-tile>
+    
+        <br/>
+    
         <mat-form-field>
-            <input matInput type='number' [(ngModel)]="settings.payInflationY" placeholder="Увеличение платежа, % в год" />
+            <input matInput type='number' [(ngModel)]="settings.comFeesM" placeholder="Коммунальные платежи без счетчиков, мес." />
         </mat-form-field>
-    </mat-grid-tile>
-</mat-grid-list>
-</td><td></td></tr></table> <!--TODO: блэт, нормальное форматирование нужно-->
-
+    
+        <mat-form-field>
+            <input matInput type='number' [(ngModel)]="settings.comFeesInflationY" placeholder="Удорожание коммуналки, % в год" />
+            <mat-hint>Через 10 лет коммуналка будет {{settings.comFeesIn10Years | number:'1.0-0'}}</mat-hint>
+        </mat-form-field>
+    
+        <br/>
+    
+        <mat-form-field>
+            <input matInput type='number' [(ngModel)]="settings.rentM" placeholder="Цена аренды в месяц" />
+        </mat-form-field>
+    
+        <mat-form-field>
+            <input matInput type='number' [(ngModel)]="settings.rentInflationY" placeholder="Удорожание аренды, % в год" />
+            <mat-hint>Через 10 лет аренда будет {{settings.rentIn10Years | number:'1.0-0'}}</mat-hint>
+        </mat-form-field>
+    
+    
+    
 <div class='resultsText'>{{resultText}}</div>
 
 
