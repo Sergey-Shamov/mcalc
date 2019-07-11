@@ -46,6 +46,7 @@ export class AppComponent {
           this.resultText += "Вы выплатите ипотеку за " + this.monthsToString(mortRow.monthNumber) + "  и переплатите " + mortRow.mortOverpay.toLocaleString(undefined, {maximumFractionDigits: 0}) + "₽\n";
           this.resultText += "Вы накопите на квартиру за " + this.monthsToString(investRow.monthNumber) + "  и переплатите " + investRow.rentPaid.toLocaleString(undefined, {maximumFractionDigits: 0}) + "₽\n";
           this.resultText += (mortRow.mortOverpay > investRow.rentPaid ? "Копить" : "Ипотека") + " дешевле на " + (Math.abs(mortRow.mortOverpay - investRow.rentPaid)).toLocaleString(undefined, {maximumFractionDigits: 0}) + "₽";
+
         }
     }
 

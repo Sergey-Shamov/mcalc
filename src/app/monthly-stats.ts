@@ -52,11 +52,17 @@
             this.mortOverpay = prev.mortOverpay + this.mortPayInterest + this.comFees + this.propTax;
 
             // Расчет аренды
-            this.rentPay = prev.rentPay * (1 + settings.rentInflationM);
+            this.rentPay = prev.propPrice < prev.investAmount ? 0 : prev.rentPay * (1 + settings.rentInflationM);
             this.rentPaid = prev.rentPaid + this.rentPay;
 
-            this.investInterest = prev.investAmount * settings.investRateM;
-            this.investAmount = prev.investAmount + this.investInterest + (this.canPay - this.rentPay);
+            if (prev.propPrice < prev.investAmount && prev.rentPay != 0) {
+                this.investInterest = (prev.investAmount - prev.propPrice) * settings.investRateM;
+                this.investAmount = prev.investAmount - prev.propPrice + this.investInterest + (this.canPay - this.rentPay - this.propTax - this.comFees);
+            }
+            else{
+                this.investInterest = prev.investAmount * settings.investRateM;
+                this.investAmount = prev.investAmount + this.investInterest + (this.canPay - this.rentPay) + (prev.rentPay == 0 ? - this.propTax - this.comFees : 0);
+            }
         }
     }
 
