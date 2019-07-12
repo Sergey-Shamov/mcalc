@@ -7,10 +7,12 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatFormFieldModule, MatInputModule, MatListModule } from '@angular/material';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { FormsModule } from '@angular/forms';
+import { MortVsRentComponent } from './mort-vs-rent/mort-vs-rent.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    MortVsRentComponent
   ],
   imports: [
     BrowserModule,

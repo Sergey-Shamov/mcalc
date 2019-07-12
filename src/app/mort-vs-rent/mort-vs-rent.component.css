@@ -1,0 +1,38 @@
+.main {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+}
+
+.divBox {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); 
+}
+
+.narrowBox {
+    display: flex;
+    flex-direction: column;
+    grid-column: span 2;
+    justify-content: stretch;
+    margin: 40px;
+}
+
+h1 {
+    grid-column: span 6;
+    align-content: center;
+    text-align: center;
+}
+
+h2 {
+    grid-column: span 3;
+    align-content: center;
+    text-align: center;
+}
+
+div {
+    grid-column: span 3;
+}
+
+mat-form-field {
+    margin: 0 0 20px 0;
+}
