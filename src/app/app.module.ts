@@ -8,11 +8,13 @@ import { MatFormFieldModule, MatInputModule, MatListModule } from '@angular/mate
 import { MatGridListModule } from '@angular/material/grid-list';
 import { FormsModule } from '@angular/forms';
 import { MortVsRentComponent } from './mort-vs-rent/mort-vs-rent.component';
+import { RentBlockComponent } from './rent-block/rent-block.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MortVsRentComponent
+    MortVsRentComponent,
+    RentBlockComponent
   ],
   imports: [
     BrowserModule,

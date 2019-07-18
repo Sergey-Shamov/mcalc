@@ -1,3 +1,5 @@
+import { CommonHelper } from './CommonHelper';
+
   export class MonthlyStats{
     public monthNumber : number;        // номер месяца
     public mortPayBody : number;        // платеж в тело кредита
@@ -134,4 +136,65 @@
     private calcYtoM(y : number){
         return y / 12 / 100;    // TODO: помесячное увеличение даст больший итог чем погодовое, так что ставки не равны
     }
+  }
+
+  // расчет ипотеки
+  export class MortCalculator{
+    public settings : MortSettings;
+    public generalSettings : GeneralSettings;
+  }
+
+  export class MortSettings{
+    public propPrice : number;      // цена квартиры
+    public comFeesM : number;       // коммунальные платежи без счетчиков (фикс), в мес
+    public propTaxY : number;       // налог, страховка, прочие платежи владения квартирой, в год
+  }
+
+  // расчет аренды + накопления
+  export class RentCalculator{
+    public generalSettings : GeneralSettings;
+    public rentM : number;                      // цена аренды, в мес
+
+  }
+  
+  // расчет покупки строящейся недвижимости в ипотеку
+  export class LotteryCalculator{
+    public generalSettings : GeneralSettings;
+    public settings : LotterySettings;
+
+  }
+
+  export class LotterySettings{
+    public propPrice : number;      // цена квартиры
+    public mortRateY : number;      // ставка по ипотеке, потому что на строящееся она часто отличается
+    public insuranceY : number;     // страховка в год
+    public propExpectedFinalPrice : number;     // ожидаемая цена после завершения строительства   TODO: проценты?
+  }
+
+  export class GeneralSettings{
+    public currMoney : number = 1000000;      // сейчас в наличии денег
+    public canPayM : number = 70000;        // могу платить, в мес
+
+    public mortRateY : number;      // ставка по ипотеке, % в год
+    public investRateY : number;    // ставка по вкладу, % в год
+
+    public propInflationY : number = 2;     // удорожание квартиры, % в год
+    public rentInflationY : number = 2;     // удорожание аренды, % в год
+    public comFeesInflationY : number = 3;  // удорожание коммуналки, % в год
+    public payInflationY : number = 0;      // увеличение платежа, % в год
+
+
+    public get investRateM() : number {return CommonHelper.yearRateToMonthlyFrac(this.investRateY);}
+    public get propInflationM() : number {return CommonHelper.yearEffRateToMonthlyFrac(this.propInflationY);}
+    
+    // Подсказки
+    public readonly propPriceExample : number = 7000000;
+    public readonly rentExample : number = 35000;
+    public readonly comFeesExample : number = 2500;
+    public get propPriceIn10Years() : number {return CommonHelper.inflatePrice(this.propPriceExample, this.propInflationY / 100, 12);}
+    public get rentIn10Years() : number {return CommonHelper.inflatePrice(this.rentExample, this.rentInflationY / 100, 12);}
+    public get investmentIn10Years() : number {return CommonHelper.inflatePrice(this.currMoney, this.investRateM, 120);}
+    public get canPayIn10Years() : number {return CommonHelper.inflatePrice(this.canPayM, this.payInflationY / 100, 10);}
+    public get comFeesIn10Years() : number {return CommonHelper.inflatePrice(this.comFeesExample, this.comFeesInflationY / 100, 12);}
+
   }
