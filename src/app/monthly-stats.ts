@@ -150,6 +150,12 @@ import { CommonHelper } from './CommonHelper';
     public propTaxY : number;       // налог, страховка, прочие платежи владения квартирой, в год
   }
 
+  export class MortMonthStats{
+      public debt : number;
+      public interest : number;
+      
+  }
+
   // расчет аренды + накопления
   export class RentCalculator{
     public generalSettings : GeneralSettings;
@@ -190,7 +196,7 @@ import { CommonHelper } from './CommonHelper';
     // Подсказки
     public readonly propPriceExample : number = 7000000;
     public readonly rentExample : number = 35000;
-    public readonly comFeesExample : number = 2500;
+    public readonly comFeesExample : number = 3000;
     public get propPriceIn10Years() : number {return CommonHelper.inflatePrice(this.propPriceExample, this.propInflationY / 100, 12);}
     public get rentIn10Years() : number {return CommonHelper.inflatePrice(this.rentExample, this.rentInflationY / 100, 12);}
     public get investmentIn10Years() : number {return CommonHelper.inflatePrice(this.currMoney, this.investRateM, 120);}
