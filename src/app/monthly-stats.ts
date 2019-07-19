@@ -67,30 +67,65 @@ export class MonthlyStats {
     }
   }
 
-  private Initialize(settings: Settings) {
-    this.monthNumber = 1;
+  // расчет ипотеки
+  export class MortCalculator{
+    public settings : MortSettings;
+    public generalSettings : GeneralSettings;
+    public rows : MortMonthStats[];
 
-    this.canPay = settings.canPayM;
-    this.mortPayInterest = (settings.propPrice - settings.currMoney) * settings.mortRateM;
-    console.log(settings.propPrice - settings.currMoney);
-    this.comFees = settings.comFeesM;
-    this.propTax = settings.propTaxM;
-    this.mortPayBody = settings.canPayM - this.mortPayInterest - this.comFees - this.propTax;
-    this.mortBodyRemain = settings.propPrice - this.mortPayBody - settings.currMoney;
-    this.mortPaidBody = this.mortPayBody;
-    this.mortPaidInterest = this.mortPayInterest;
-    this.rentPay = settings.rentM;
-    this.rentPaid = this.rentPay;
+    public startingMonthNo: number;
 
-    this.investInterest = settings.currMoney * settings.investRateM;
-    this.investAmount = settings.currMoney + this.investInterest + (this.canPay - this.rentPay);
-    this.propPrice = settings.propPrice;
+    public resultLength: number;
 
-    this.mortOverpay = this.mortPayInterest + this.comFees + this.propTax;
+
+    public calculate(){
+      let currMonth = 0;
+      let totalMonth = this.startingMonthNo;
+      let prevDebt = this.settings.propPrice;
+      let lastRow : MortMonthStats = undefined;
+      do{
+        lastRow = this.makeRow(prevDebt, currMonth, totalMonth);
+        this.rows.push(lastRow);
+        prevDebt = lastRow.debt;
+        currMonth++;
+        totalMonth++;
+      } while(lastRow.debt > 0);
+
+      this.resultLength = currMonth - 1;
+    }
+
+    private makeRow(prevDebt : number, monthNo : number, totalMonthNo : number): MortMonthStats {
+      let newRow = new MortMonthStats();
+      newRow.interest = prevDebt * this.generalSettings.mortRateMFrac;
+
+      newRow.payComFees = this.generalSettings.getComFees(this.settings.comFeesM, monthNo);
+      newRow.payTax = this.settings.propTaxY / 12;
+
+      newRow.debt = Math.max(0, prevDebt - this.generalSettings.getPay(totalMonthNo) - newRow.payComFees - newRow.payTax - newRow.interest);   // TODO: платежа может не хватить
+
+      return newRow;
+    }
   }
 
-  public IsDone(): boolean {
-    return this.mortBodyRemain <= 0 && this.investAmount >= this.propPrice;
+  export class MortSettings{
+    public propPrice : number;      // цена квартиры
+    public comFeesM : number;       // коммунальные платежи без счетчиков (фикс), в мес
+    public propTaxY : number;       // налог, страховка, прочие платежи владения квартирой, в год
+  }
+
+  export class MortMonthStats{
+      public debt : number;
+      public interest : number;
+      public payDebt : number;
+      public payComFees : number;
+      public payTax : number;
+  }
+
+  // расчет аренды + накопления
+  export class RentCalculator{
+    public generalSettings : GeneralSettings;
+    public rentM : number;                      // цена аренды, в мес
+
   }
 }
 
@@ -135,65 +170,40 @@ export class Settings {
   private calcYtoM(y: number) {
     return y / 12 / 100;    // TODO: помесячное увеличение даст больший итог чем погодовое, так что ставки не равны
   }
-}
 
-// расчет ипотеки
-export class MortCalculator {
-  public settings: MortSettings;
-  public generalSettings: GeneralSettings;
-}
+  export class GeneralSettings{
+    public currMoney : number = 1000000;      // сейчас в наличии денег
+    public canPayM : number = 70000;        // могу платить, в мес
 
-export class MortSettings {
-  public propPrice: number;      // цена квартиры
-  public comFeesM: number;       // коммунальные платежи без счетчиков (фикс), в мес
-  public propTaxY: number;       // налог, страховка, прочие платежи владения квартирой, в год
-}
+    public mortRateY : number;      // ставка по ипотеке, % в год
+    public investRateY : number;    // ставка по вкладу, % в год
 
-// расчет аренды + накопления
-export class RentCalculator {
-  public generalSettings: GeneralSettings;
-  public rentM: number;                      // цена аренды, в мес
-
-}
-
-// расчет покупки строящейся недвижимости в ипотеку
-export class LotteryCalculator {
-  public generalSettings: GeneralSettings;
-  public settings: LotterySettings;
-
-}
-
-export class LotterySettings {
-  public propPrice: number;      // цена квартиры
-  public mortRateY: number;      // ставка по ипотеке, потому что на строящееся она часто отличается
-  public insuranceY: number;     // страховка в год
-  public propExpectedFinalPrice: number;     // ожидаемая цена после завершения строительства   TODO: проценты?
-}
-
-export class GeneralSettings {
-  public currMoney: number = 1000000;      // сейчас в наличии денег
-  public canPayM: number = 70000;        // могу платить, в мес
-
-  public mortRateY: number;      // ставка по ипотеке, % в год
-  public investRateY: number;    // ставка по вкладу, % в год
-
-  public propInflationY: number = 2;     // удорожание квартиры, % в год
-  public rentInflationY: number = 2;     // удорожание аренды, % в год
-  public comFeesInflationY: number = 3;  // удорожание коммуналки, % в год
-  public payInflationY: number = 0;      // увеличение платежа, % в год
+    public propInflationY : number = 2;     // удорожание квартиры, % в год
+    public rentInflationY : number = 2;     // удорожание аренды, % в год
+    public comFeesInflationY : number = 3;  // удорожание коммуналки, % в год
+    public payInflationY : number = 0;      // увеличение платежа, % в год
 
 
-  public get investRateM(): number { return CommonHelper.yearRateToMonthlyFrac(this.investRateY); }
-  public get propInflationM(): number { return CommonHelper.yearEffRateToMonthlyFrac(this.propInflationY); }
+    public get investRateMFrac() : number {return CommonHelper.yearRateToMonthlyFrac(this.investRateY);}
+    public get propInflationMFrac() : number {return CommonHelper.yearEffRateToMonthlyFrac(this.propInflationY);}
+    public get mortRateMFrac() : number {return CommonHelper.yearRateToMonthlyFrac(this.mortRateY);}
 
-  // Подсказки
-  public readonly propPriceExample: number = 7000000;
-  public readonly rentExample: number = 35000;
-  public readonly comFeesExample: number = 2500;
-  public get propPriceIn10Years(): number { return CommonHelper.inflatePrice(this.propPriceExample, this.propInflationY / 100, 12); }
-  public get rentIn10Years(): number { return CommonHelper.inflatePrice(this.rentExample, this.rentInflationY / 100, 12); }
-  public get investmentIn10Years(): number { return CommonHelper.inflatePrice(this.currMoney, this.investRateM, 120); }
-  public get canPayIn10Years(): number { return CommonHelper.inflatePrice(this.canPayM, this.payInflationY / 100, 10); }
-  public get comFeesIn10Years(): number { return CommonHelper.inflatePrice(this.comFeesExample, this.comFeesInflationY / 100, 12); }
+    // Подсказки
+    public readonly propPriceExample : number = 7000000;
+    public readonly rentExample : number = 35000;
+    public readonly comFeesExample : number = 3000;
+    public get propPriceIn10Years() : number {return CommonHelper.inflatePrice(this.propPriceExample, this.propInflationY / 100, 12);}
+    public get rentIn10Years() : number {return CommonHelper.inflatePrice(this.rentExample, this.rentInflationY / 100, 12);}
+    public get investmentIn10Years() : number {return CommonHelper.inflatePrice(this.currMoney, this.investRateMFrac, 120);}
+    public get canPayIn10Years() : number {return this.getPay(120);}
+    public get comFeesIn10Years() : number {return this.getComFees(this.comFeesExample, 120);}
 
-}
+    getPay(monthNo: number): number {
+      //TODO: возможность менять платеж на графике
+      return CommonHelper.inflateYearly(this.canPayM, this.payInflationY, monthNo);
+    }
+
+    getComFees(comFees: number, monthNo: number): number {
+      return CommonHelper.inflateYearly(comFees, this.comFeesInflationY, monthNo);
+    }
+  }
