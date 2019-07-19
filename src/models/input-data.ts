@@ -10,4 +10,5 @@ export class InputData {
   public comFeesInflationY: number = 3;  // удорожание коммуналки, % в год
   public payInflationY: number = 0;      // увеличение платежа, % в год
 
+  public flatPrice = 7_000_000 //цена квартиры
 }
