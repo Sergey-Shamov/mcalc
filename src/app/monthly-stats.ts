@@ -142,6 +142,40 @@ import { CommonHelper } from './CommonHelper';
   export class MortCalculator{
     public settings : MortSettings;
     public generalSettings : GeneralSettings;
+    public rows : MortMonthStats[];
+
+    public startingMonthNo: number;
+
+    public resultLength: number;
+
+    
+    public calculate(){
+      let currMonth = 0;
+      let totalMonth = this.startingMonthNo;
+      let prevDebt = this.settings.propPrice;
+      let lastRow : MortMonthStats = undefined;
+      do{
+        lastRow = this.makeRow(prevDebt, currMonth, totalMonth);
+        this.rows.push(lastRow);
+        prevDebt = lastRow.debt;
+        currMonth++;
+        totalMonth++;
+      } while(lastRow.debt > 0);
+
+      this.resultLength = currMonth - 1;
+    }
+
+    private makeRow(prevDebt : number, monthNo : number, totalMonthNo : number): MortMonthStats {
+      let newRow = new MortMonthStats();
+      newRow.interest = prevDebt * this.generalSettings.mortRateMFrac;
+
+      newRow.payComFees = this.generalSettings.getComFees(this.settings.comFeesM, monthNo);
+      newRow.payTax = this.settings.propTaxY / 12;
+      
+      newRow.debt = Math.max(0, prevDebt - this.generalSettings.getPay(totalMonthNo) - newRow.payComFees - newRow.payTax - newRow.interest);   // TODO: платежа может не хватить
+      
+      return newRow;
+    }
   }
 
   export class MortSettings{
@@ -151,9 +185,11 @@ import { CommonHelper } from './CommonHelper';
   }
 
   export class MortMonthStats{
-      public debt : number;
+      public debt : number;   
       public interest : number;
-      
+      public payDebt : number;
+      public payComFees : number;
+      public payTax : number;
   }
 
   // расчет аренды + накопления
@@ -190,8 +226,9 @@ import { CommonHelper } from './CommonHelper';
     public payInflationY : number = 0;      // увеличение платежа, % в год
 
 
-    public get investRateM() : number {return CommonHelper.yearRateToMonthlyFrac(this.investRateY);}
-    public get propInflationM() : number {return CommonHelper.yearEffRateToMonthlyFrac(this.propInflationY);}
+    public get investRateMFrac() : number {return CommonHelper.yearRateToMonthlyFrac(this.investRateY);}
+    public get propInflationMFrac() : number {return CommonHelper.yearEffRateToMonthlyFrac(this.propInflationY);}
+    public get mortRateMFrac() : number {return CommonHelper.yearRateToMonthlyFrac(this.mortRateY);}
     
     // Подсказки
     public readonly propPriceExample : number = 7000000;
@@ -199,8 +236,16 @@ import { CommonHelper } from './CommonHelper';
     public readonly comFeesExample : number = 3000;
     public get propPriceIn10Years() : number {return CommonHelper.inflatePrice(this.propPriceExample, this.propInflationY / 100, 12);}
     public get rentIn10Years() : number {return CommonHelper.inflatePrice(this.rentExample, this.rentInflationY / 100, 12);}
-    public get investmentIn10Years() : number {return CommonHelper.inflatePrice(this.currMoney, this.investRateM, 120);}
-    public get canPayIn10Years() : number {return CommonHelper.inflatePrice(this.canPayM, this.payInflationY / 100, 10);}
-    public get comFeesIn10Years() : number {return CommonHelper.inflatePrice(this.comFeesExample, this.comFeesInflationY / 100, 12);}
+    public get investmentIn10Years() : number {return CommonHelper.inflatePrice(this.currMoney, this.investRateMFrac, 120);}
+    public get canPayIn10Years() : number {return this.getPay(120);}
+    public get comFeesIn10Years() : number {return this.getComFees(this.comFeesExample, 120);}
 
+    getPay(monthNo: number): number {
+      //TODO: возможность менять платеж на графике
+      return CommonHelper.inflateYearly(this.canPayM, this.payInflationY, monthNo);
+    }
+
+    getComFees(comFees: number, monthNo: number): number {
+      return CommonHelper.inflateYearly(comFees, this.comFeesInflationY, monthNo);
+    }
   }
