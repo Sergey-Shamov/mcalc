@@ -9,11 +9,12 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./rent-block.component.css']
 })
 export class RentBlockComponent implements OnInit, OnDestroy {
-   
+
+  public input: InputData = null;
 
   constructor(@Inject(INPUT_DATA_SERVICE_TOKEN) private readonly inputDataService: InputDataService) { }
 
-  private dataSubscription:Subscription;
+  private dataSubscription: Subscription;
 
   ngOnInit() {
     this.dataSubscription = this.inputDataService.inputData.subscribe(this.onDataChanges);
@@ -21,9 +22,9 @@ export class RentBlockComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.dataSubscription.unsubscribe();
   }
-  
-  private onDataChanges(data:InputData){
 
+  private onDataChanges(data: InputData) {
+    this.input = data;
   }
 
 }

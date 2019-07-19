@@ -9,6 +9,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { FormsModule } from '@angular/forms';
 import { MortVsRentComponent } from './mort-vs-rent/mort-vs-rent.component';
 import { RentBlockComponent } from './rent-block/rent-block.component';
+import { INPUT_DATA_SERVICE_TOKEN, InputDataService } from 'src/services/input-data-service';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,7 @@ import { RentBlockComponent } from './rent-block/rent-block.component';
     MatGridListModule,
     MatListModule
   ],
-  providers: [],
+  providers: [{provide:INPUT_DATA_SERVICE_TOKEN, useClass:InputDataService}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
