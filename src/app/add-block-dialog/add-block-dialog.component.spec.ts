@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MainCalcPageComponent } from './main-calc-page.component';
+import { AddBlockDialogComponent } from './add-block-dialog.component';
 
-describe('MainCalcPageComponent', () => {
-  let component: MainCalcPageComponent;
-  let fixture: ComponentFixture<MainCalcPageComponent>;
+describe('AddBlockDialogComponent', () => {
+  let component: AddBlockDialogComponent;
+  let fixture: ComponentFixture<AddBlockDialogComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MainCalcPageComponent ]
+      declarations: [ AddBlockDialogComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MainCalcPageComponent);
+    fixture = TestBed.createComponent(AddBlockDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

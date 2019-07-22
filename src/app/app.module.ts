@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MatFormFieldModule, MatInputModule, MatListModule } from '@angular/material';
+import { MatFormFieldModule, MatInputModule, MatListModule, MatButtonModule, MatDialogModule, MAT_DIALOG_DATA } from '@angular/material';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { FormsModule } from '@angular/forms';
 import { MortVsRentComponent } from './mort-vs-rent/mort-vs-rent.component';
@@ -14,6 +14,10 @@ import { McalcOldComponent } from './mcalc-old/mcalc-old.component';
 import { RouterModule, Routes } from '@angular/router';
 import { NotFoundComponent } from './not-found-component/not-found-component.component';
 import { MainCalcPageComponent } from './main-calc-page/main-calc-page.component';
+import { ColumnBlockComponent } from './column-block/column-block.component';
+import { AddBlockDialogComponent } from './add-block-dialog/add-block-dialog.component';
+import { BlockService, BLOCK_SERVICE_TOKEN } from 'src/services/block-service';
+import { BlockComponent } from './block/block.component';
 
 const appRoutes: Routes = [
   {
@@ -25,14 +29,19 @@ const appRoutes: Routes = [
     path: 'calculator',
     component: MainCalcPageComponent
   },
-  { path: '',
+  {
+    path: '',
     redirectTo: '/calculator',
     pathMatch: 'full'
   },
-  { path: '404',
-    component: NotFoundComponent},
-  { path: '**',
-    redirectTo: '/404'}
+  {
+    path: '404',
+    component: NotFoundComponent
+  },
+  {
+    path: '**',
+    redirectTo: '/404'
+  }
 ];
 
 
@@ -43,7 +52,10 @@ const appRoutes: Routes = [
     RentBlockComponent,
     McalcOldComponent,
     NotFoundComponent,
-    MainCalcPageComponent
+    MainCalcPageComponent,
+    ColumnBlockComponent,
+    AddBlockDialogComponent,
+    BlockComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
@@ -54,11 +66,18 @@ const appRoutes: Routes = [
     MatInputModule,
     FormsModule,
     MatGridListModule,
-    MatListModule
+    MatListModule,
+    MatButtonModule,
+    MatDialogModule,
   ],
-  providers: [{provide:INPUT_DATA_SERVICE_TOKEN, useClass:InputDataService}],
+  entryComponents: [AddBlockDialogComponent],
+  providers: [
+    { provide: INPUT_DATA_SERVICE_TOKEN, useClass: InputDataService },
+    { provide: BLOCK_SERVICE_TOKEN, useClass: BlockService },
+    { provide: MAT_DIALOG_DATA, useValue: {} }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  
- }
+
+}
