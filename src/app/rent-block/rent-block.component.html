@@ -1,3 +1,13 @@
-<div class="column-host">
-    <
+<div class="rent-panel">
+    <mat-form-field>
+        <input matInput type='number' [(ngModel)]="settings.rentMonthCost" placeholder="Цена аренды в месяц" />
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput type='number' [(ngModel)]="settings.investRateY" placeholder="Ставка по вкладу, % в год" />
+        <mat-hint>Через 10 лет на вкладе будет {{InvestIn10Years | number:'1.0-0'}}</mat-hint>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput type='number' [(ngModel)]="settings.rentYearRate" placeholder="Удорожание аренды, % в год" />
+        <mat-hint>Через 10 лет аренда будет {{settings.rentIn10Years | number:'1.0-0'}}</mat-hint>
+    </mat-form-field>
 </div>

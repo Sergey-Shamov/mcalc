@@ -1,5 +1,5 @@
 import { Injectable, InjectionToken } from '@angular/core';
-import { Observable, BehaviorSubject, Subject, Observer } from 'rxjs';
+import { Observable, Observer } from 'rxjs';
 import { InputData } from 'src/models/input-data';
 
 export const INPUT_DATA_SERVICE_TOKEN = new InjectionToken('INPUT_DATA_SERVICE');

@@ -18,6 +18,7 @@ import { ColumnBlockComponent } from './column-block/column-block.component';
 import { AddBlockDialogComponent } from './add-block-dialog/add-block-dialog.component';
 import { BlockService, BLOCK_SERVICE_TOKEN } from 'src/services/block-service';
 import { BlockComponent } from './block/block.component';
+import { CommonSettingsPanelComponent } from './common-settings-panel/common-settings-panel.component';
 
 const appRoutes: Routes = [
   {
@@ -55,7 +56,8 @@ const appRoutes: Routes = [
     MainCalcPageComponent,
     ColumnBlockComponent,
     AddBlockDialogComponent,
-    BlockComponent
+    BlockComponent,
+    CommonSettingsPanelComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes),

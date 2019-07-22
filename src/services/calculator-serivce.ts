@@ -32,7 +32,7 @@ export class CalculatorSerivce {
 
     const rentAfterInflate = settingsHelper.getCurrentRent(rentSettings.rentMonthCost, rentSettings.rentMonthRate);
 
-    const accumulatedOnDeposit = prevRow ? 0 : settingsHelper.inflatePrice(prevRow.totalDeposit, rentSettings.investRateM) - prevRow.totalDeposit;
+    const accumulatedOnDeposit = prevRow ? 0 : settingsHelper.inflatePrice(prevRow.totalDeposit, rentSettings.investRateMFrac) - prevRow.totalDeposit;
 
     const addToInvest = settingsHelper.getCurrentPay(this.inputData.canPayM, this.inputData.payInflationY) - rentAfterInflate;
     const totalDeposit = prevRow ? this.inputData.currMoney : prevRow.totalDeposit + accumulatedOnDeposit + addToInvest;

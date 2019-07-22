@@ -1,0 +1,17 @@
+<mat-form-field>
+    <input matInput type='number' [(ngModel)]="input.flatPrice" placeholder="Цена квартиры"/>
+</mat-form-field>
+<mat-form-field>
+    <input matInput type='number' [(ngModel)]="input.currMoney" placeholder="Денег в наличии"/>
+</mat-form-field>
+<mat-form-field>
+    <input matInput type='number' [(ngModel)]="input.canPayM" placeholder="Могу платить в месяц"/>
+</mat-form-field>
+<mat-form-field>
+    <input matInput type='number' [(ngModel)]="input.propInflationY" placeholder="Удорожание квартиры, % в год" />
+    <mat-hint>Через 10 лет квартира будет стоить {{input.propPriceIn10Years | number:'1.0-0'}}</mat-hint>
+</mat-form-field>
+<mat-form-field>
+    <input matInput type='number' [(ngModel)]="input.payInflationY" placeholder="Увеличение платежа, % в год" />
+    <mat-hint>Через 10 лет макс. платеж будет {{input.canPayIn10Years | number:'1.0-0'}}</mat-hint>
+</mat-form-field>
