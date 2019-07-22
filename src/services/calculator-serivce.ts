@@ -5,7 +5,7 @@ import { InputDataService, INPUT_DATA_SERVICE_TOKEN } from './input-data-service
 import { Inject } from '@angular/core';
 import { RentSettings } from 'src/models/rent-settings';
 import { CommonHelper } from 'src/helpers/сommon-helper';
-import { MonthCalculator } from 'src/helpers/month-calculator';
+import { SettingsHelper } from 'src/helpers/month-calculator';
 
 export class CalculatorSerivce {
 
@@ -24,27 +24,22 @@ export class CalculatorSerivce {
       this.makeRentRow,
       this.shouldMakeRentRow
     );
-
   }
 
+  // Расчет строки графика накопление+аренда
+  private makeRentRow(rentSettings: RentSettings, prevRow: RentMonthStats, monthNo: number, globalMonthNo: number) {
+    const monthHelper = new SettingsHelper(monthNo, globalMonthNo);
 
+    const rentBeforeInflate = monthHelper.getCurrentRent(rentSettings.rentMonthCost);
+    const rentAfterInflate = monthHelper.inflatePrice(rentBeforeInflate, rentSettings.rentMonthRate);
 
+    const accumulatedOnDeposit = prevRow ? 0 : monthHelper.inflatePrice(prevRow.totalDeposit, rentSettings.investRateM) - prevRow.totalDeposit;
 
-
-
-  private makeRentRow(rentSettings: RentSettings, prevRow: RentMonthStats, monthNo: number, totalMonthNo: number) {
-    const monthHeleper = new MonthCalculator(monthNo);
-
-    const rentBeforeInflate = monthHeleper.currentValue(rentSettings.rentMonthCost);
-    const rentAfterInflate = monthHeleper.inflatePrice(rentBeforeInflate, rentSettings.rentMonthRate);
-
-    const accumulatedOnDeposit = prevRow ? 0 : monthHeleper.inflatePrice(prevRow.totalDeposit, rentSettings.investRateM) - prevRow.totalDeposit;
-
-    const addToInvest = monthHeleper.currentValue(this.inputData.canPayM, totalMonthNo) - rentAfterInflate;
+    const addToInvest = monthHelper.getCurrentPay(this.inputData.canPayM) - rentAfterInflate;
     const totalDeposit = prevRow ? this.inputData.currMoney : prevRow.totalDeposit + accumulatedOnDeposit + addToInvest;
 
     let newRow = <RentMonthStats>{
-      totalMonthNo: totalMonthNo,
+      totalMonthNo: globalMonthNo,
       monthNo: monthNo,
       payRent: rentBeforeInflate,
       interest: accumulatedOnDeposit,
@@ -54,9 +49,12 @@ export class CalculatorSerivce {
 
     return newRow
   }
+
   private shouldMakeRentRow(row: RentMonthStats) {
     return row.totalDeposit < this.inputData.flatPrice;
   }
+
+
   private calculatePaymentTable<TRow, TBlockSettings>(settings: TBlockSettings, startingMonthNo: number, rows: TRow[], makeRowFunc, checkFinalFunc) {
     let currMonth = 0;
     let totalMonth = startingMonthNo;
