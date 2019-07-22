@@ -1,6 +1,7 @@
+import { CommonHelper } from './../helpers/сommon-helper';
 export class InputData {
   public currMoney: number = 1000000;      // сейчас в наличии денег
-  public canPayM: number = 70000;        // могу платить, в мес
+  public canPayM: { [month:number] : number};        // могу платить, в мес
 
   public mortRateY: number;      // ставка по ипотеке, % в год
   public investRateY: number;    // ставка по вкладу, % в год
@@ -11,4 +12,5 @@ export class InputData {
   public payInflationY: number = 0;      // увеличение платежа, % в год
 
   public flatPrice = 7_000_000 //цена квартиры
+
 }
