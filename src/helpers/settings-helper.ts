@@ -1,6 +1,5 @@
 import { VariableSettingsCalculator } from './variable-settings-calculator';
 import { CommonHelper } from './сommon-helper';
-import { MinLengthValidator } from '@angular/forms';
 export class SettingsHelper {
   constructor(private readonly localMonth: number, private readonly globalMonth: number) {
 

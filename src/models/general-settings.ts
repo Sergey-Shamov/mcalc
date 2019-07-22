@@ -1,3 +1,5 @@
+import { CommonHelper } from 'src/helpers/сommon-helper';
+
 export class GeneralSettings{
     getRent(rentM: number, monthNo: number): number {
       throw new Error("Method not implemented.");
