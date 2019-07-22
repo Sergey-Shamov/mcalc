@@ -28,20 +28,19 @@ export class CalculatorSerivce {
 
   // Расчет строки графика накопление+аренда
   private makeRentRow(rentSettings: RentSettings, prevRow: RentMonthStats, monthNo: number, globalMonthNo: number) {
-    const monthHelper = new SettingsHelper(monthNo, globalMonthNo);
+    const settingsHelper = new SettingsHelper(monthNo, globalMonthNo);
 
-    const rentBeforeInflate = monthHelper.getCurrentRent(rentSettings.rentMonthCost);
-    const rentAfterInflate = monthHelper.inflatePrice(rentBeforeInflate, rentSettings.rentMonthRate);
+    const rentAfterInflate = settingsHelper.getCurrentRent(rentSettings.rentMonthCost, rentSettings.rentMonthRate);
 
-    const accumulatedOnDeposit = prevRow ? 0 : monthHelper.inflatePrice(prevRow.totalDeposit, rentSettings.investRateM) - prevRow.totalDeposit;
+    const accumulatedOnDeposit = prevRow ? 0 : settingsHelper.inflatePrice(prevRow.totalDeposit, rentSettings.investRateM) - prevRow.totalDeposit;
 
-    const addToInvest = monthHelper.getCurrentPay(this.inputData.canPayM) - rentAfterInflate;
+    const addToInvest = settingsHelper.getCurrentPay(this.inputData.canPayM, this.inputData.payInflationY) - rentAfterInflate;
     const totalDeposit = prevRow ? this.inputData.currMoney : prevRow.totalDeposit + accumulatedOnDeposit + addToInvest;
 
     let newRow = <RentMonthStats>{
       totalMonthNo: globalMonthNo,
       monthNo: monthNo,
-      payRent: rentBeforeInflate,
+      payRent: rentAfterInflate,
       interest: accumulatedOnDeposit,
       addToInvest: addToInvest,
       totalDeposit: totalDeposit

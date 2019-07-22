@@ -1,7 +1,7 @@
 import { MortSettings } from 'src/models/mort-settings';
 import { MortMonthStats } from 'src/models/mort-month-stats';
 import { GeneralSettings } from 'src/models/general-settings';
-import { CommonHelper } from 'src/helpers/сommon-helper';
+import { LotterySettings } from 'src/models/lottery-settings';
 
 export class MonthlyStats {
   public monthNumber: number;        // номер месяца
@@ -178,7 +178,7 @@ export class MortCalculator implements ICalculator {
   }
 
   private makeRow(prevRow: MortMonthStats, monthNo: number, totalMonthNo: number): MortMonthStats {
-    let newRow = new MortMonthStats();
+    let newRow = <MortMonthStats>{};
     let prevDebt = prevRow == undefined ? this.settings.propPrice - this.generalSettings.currMoney : prevRow.debt;  //TOOD: пробросить правильный первый взнос
     newRow.interest = prevDebt * this.generalSettings.mortRateMFrac;
 
@@ -196,7 +196,7 @@ export class MortCalculator implements ICalculator {
 }
 
 // расчет аренды + накопления
-export class RentCalculator implements ICalculator {
+/*export class RentCalculator implements ICalculator {
   public generalSettings: GeneralSettings;
   public rows: RentMonthStats[];
 
@@ -228,7 +228,7 @@ export class RentCalculator implements ICalculator {
   private checkFinal(row: RentMonthStats): boolean {
     return row.totalDeposit > CommonHelper.inflatePrice(this.propPrice, this.generalSettings.propInflationMFrac, row.monthNo);
   }
-}
+}*/
 
 // расчет покупки строящейся недвижимости в ипотеку
 export class LotteryCalculator implements ICalculator {

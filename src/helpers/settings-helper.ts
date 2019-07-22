@@ -11,13 +11,17 @@ export class SettingsHelper {
     return CommonHelper.inflatePrice(price, rateFrac, this.localMonth);
   }
 
-  public getCurrentPay(pay: {[month: number]: number}): number { return this.getByGlobalMonth(pay); }
+  public getCurrentPay(pay: {[month: number]: number}, inflationRate: number): number { 
+    return CommonHelper.inflateYearly(this.getByGlobalMonth(pay), inflationRate, this.globalMonth);   //TODO: учесть номер месяца взятого значения платежа
+  }
 
-  public getCurrentRent(rent: {[month: number]: number}): number { return this.getByLocalMonth(rent); }
+  public getCurrentRent(rent: {[month: number]: number}, inflationRate: number): number { 
+    return CommonHelper.inflateYearly(this.getByLocalMonth(rent), inflationRate, this.localMonth);    //TODO: учесть номер месяца взятого значения арернды
+  }
 
-  public getByLocalMonth(dictionary: {[month: number]: number}): number { return this.currentValue(dictionary, this.localMonth);}
+  private getByLocalMonth(dictionary: {[month: number]: number}): number { return this.currentValue(dictionary, this.localMonth);}
 
-  public getByGlobalMonth(dictionary: {[month: number]: number}): number { return this.currentValue(dictionary, this.globalMonth);}
+  private getByGlobalMonth(dictionary: {[month: number]: number}): number { return this.currentValue(dictionary, this.globalMonth);}
 
   //Вытаскивает текущую месячную цену из словаря
   private currentValue(dictionary: { [month: number]: number }, month:number): number {
