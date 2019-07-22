@@ -5,7 +5,7 @@ import { InputDataService, INPUT_DATA_SERVICE_TOKEN } from './input-data-service
 import { Inject } from '@angular/core';
 import { RentSettings } from 'src/models/rent-settings';
 import { CommonHelper } from 'src/helpers/сommon-helper';
-import { SettingsHelper } from 'src/helpers/month-calculator';
+import { SettingsHelper } from 'src/helpers/settings-helper';
 
 export class CalculatorSerivce {
 
