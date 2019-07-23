@@ -12,14 +12,13 @@ import { MortSettings } from 'src/models/mort-settings';
 export class MortBlockComponent  implements OnInit, OnDestroy {
 
   public input: InputData = null;
-  public settings:MortSettings;
+  public settings = new MortSettings();
 
   constructor(@Inject(INPUT_DATA_SERVICE_TOKEN) private readonly inputDataService: InputDataService) { }
 
   private dataSubscription: Subscription;
 
   ngOnInit() {
-    this.settings = new MortSettings();
     this.dataSubscription = this.inputDataService.inputData.subscribe(this.onDataChanges);
   }
   ngOnDestroy(): void {
