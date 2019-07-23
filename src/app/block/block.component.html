@@ -1,6 +1,10 @@
-<div class="block-panel">
-    <div [ngSwitch]="blockType.toString()">
-        <div *ngSwitchCase="'0'"><app-mort-block></app-mort-block></div>
-        <div *ngSwitchCase="'1'"><app-rent-block></app-rent-block></div>
-    </div>
-</div>
+<mat-card>
+    <mat-card-content>
+        <div class="block-panel">
+            <div [ngSwitch]="blockType.toString()">
+                <div *ngSwitchCase="'0'"><app-mort-block></app-mort-block></div>
+                <div *ngSwitchCase="'1'"><app-rent-block></app-rent-block></div>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>

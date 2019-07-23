@@ -3,18 +3,19 @@
     flex-direction: column;
     justify-content: center;
 	flex-grow: 1;
+	margin-right: 10px;
 }
-.card{
+.column{
 	display: flex;
 	flex-direction: column;
 	flex-grow: 1;
 }
-.footer{
+.column-footer{
 	display: flex;
 	justify-content: stretch;
 	align-items: stretch;
 	padding: 10px;
 }
-.footer button{
+.column-footer button{
 	flex-grow: 1;
 }
