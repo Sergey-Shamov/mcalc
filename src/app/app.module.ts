@@ -19,6 +19,7 @@ import { AddBlockDialogComponent } from './add-block-dialog/add-block-dialog.com
 import { BlockService, BLOCK_SERVICE_TOKEN } from 'src/services/block-service';
 import { BlockComponent } from './block/block.component';
 import { CommonSettingsPanelComponent } from './common-settings-panel/common-settings-panel.component';
+import { MortBlockComponent } from './mort-block/mort-block.component';
 
 const appRoutes: Routes = [
   {
@@ -57,7 +58,8 @@ const appRoutes: Routes = [
     ColumnBlockComponent,
     AddBlockDialogComponent,
     BlockComponent,
-    CommonSettingsPanelComponent
+    CommonSettingsPanelComponent,
+    MortBlockComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes),

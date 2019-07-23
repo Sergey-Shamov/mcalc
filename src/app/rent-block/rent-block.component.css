@@ -1,3 +1,4 @@
-.column-host {
-    
+.rent-panel {
+    display: flex;
+    flex-direction: column;
 }

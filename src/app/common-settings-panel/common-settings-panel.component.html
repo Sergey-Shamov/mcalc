@@ -16,4 +16,4 @@
     <mat-hint>Через 10 лет макс. платеж будет {{input.canPayIn10Years | number:'1.0-0'}}</mat-hint>
 </mat-form-field>
 
-<button mat-flat-button color='primary'>Пересчитать</button>
+<button mat-flat-button color='primary' (onclick)="applyInput">Пересчитать</button>

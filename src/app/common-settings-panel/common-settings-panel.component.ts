@@ -18,6 +18,11 @@ export class CommonSettingsPanelComponent implements OnInit {
   constructor(@Inject(INPUT_DATA_SERVICE_TOKEN) private readonly inputDataService: InputDataService) { }
 
   ngOnInit() {
+    this.applyInput();
+  }
+
+  public applyInput(){
+    this.inputDataService.push(this.input);
   }
 
 }

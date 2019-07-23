@@ -19,7 +19,7 @@ export class RentBlockComponent implements OnInit, OnDestroy {
   private dataSubscription: Subscription;
   public readonly settings: RentSettings = new RentSettings();
 
-  public get InvestIn10Years() {return CommonHelper.inflatePrice(this.input.currMoney, this.settings.investRateMFrac, 120);}
+  public get InvestIn10Years() {return this.input == null ? 0 : CommonHelper.inflatePrice(this.input.currMoney, this.settings.investRateMFrac, 120);}
 
   ngOnInit() {
     this.dataSubscription = this.inputDataService.inputData.subscribe(this.onDataChanges);
@@ -28,8 +28,6 @@ export class RentBlockComponent implements OnInit, OnDestroy {
     this.dataSubscription.unsubscribe();
   }
 
-  private onDataChanges(data: InputData) {
-    this.input = data;
-  }
+  private onDataChanges(data: InputData) { this.input = data; }
 
 }

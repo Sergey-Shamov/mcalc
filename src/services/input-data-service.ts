@@ -1,5 +1,5 @@
 import { Injectable, InjectionToken } from '@angular/core';
-import { Observable, Observer, Subject } from 'rxjs';
+import { Observable, Observer, BehaviorSubject } from 'rxjs';
 import { InputData } from 'src/models/input-data';
 
 export const INPUT_DATA_SERVICE_TOKEN = new InjectionToken('INPUT_DATA_SERVICE');
@@ -7,7 +7,7 @@ export const INPUT_DATA_SERVICE_TOKEN = new InjectionToken('INPUT_DATA_SERVICE')
 @Injectable({ providedIn: 'root' })
 export class InputDataService {
 
-  public inputData = new Subject<InputData>();
+  public inputData = new BehaviorSubject<InputData>(new InputData());
 
   constructor() {
 
