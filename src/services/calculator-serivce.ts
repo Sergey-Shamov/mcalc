@@ -2,10 +2,12 @@ import { VariableSettingsCalculator } from './../helpers/variable-settings-calcu
 import { InputData } from 'src/models/input-data';
 import { RentMonthStats } from 'src/models/rent-month-stats';
 import { InputDataService, INPUT_DATA_SERVICE_TOKEN } from './input-data-service';
-import { Inject } from '@angular/core';
+import { Inject, InjectionToken } from '@angular/core';
 import { RentSettings } from 'src/models/rent-settings';
 import { CommonHelper } from 'src/helpers/сommon-helper';
 import { SettingsHelper } from 'src/helpers/settings-helper';
+
+export const CALCULATOR_SERVICE_TOKEN = new InjectionToken('calculator_service');
 
 export class CalculatorSerivce {
 
@@ -27,15 +29,14 @@ export class CalculatorSerivce {
   }
 
   // Расчет строки графика накопление+аренда
-  private makeRentRow(rentSettings: RentSettings, prevRow: RentMonthStats, monthNo: number, globalMonthNo: number) {
+  private makeRentRow(rentSettings: RentSettings, inputData:InputData, prevRow: RentMonthStats, monthNo: number, globalMonthNo: number) {
     const settingsHelper = new SettingsHelper(monthNo, globalMonthNo);
-
     const rentAfterInflate = settingsHelper.getCurrentRent(rentSettings.rentMonthCost, rentSettings.rentMonthRate);
+    
+    const accumulatedOnDeposit = prevRow ? settingsHelper.inflatePrice(prevRow.totalDeposit, rentSettings.investRateMFrac) - prevRow.totalDeposit : 0;
 
-    const accumulatedOnDeposit = prevRow ? 0 : settingsHelper.inflatePrice(prevRow.totalDeposit, rentSettings.investRateMFrac) - prevRow.totalDeposit;
-
-    const addToInvest = settingsHelper.getCurrentPay(this.inputData.canPayM, this.inputData.payInflationY) - rentAfterInflate;
-    const totalDeposit = prevRow ? this.inputData.currMoney : prevRow.totalDeposit + accumulatedOnDeposit + addToInvest;
+    const addToInvest = settingsHelper.getCurrentPay(inputData.canPayM, inputData.payInflationY) - rentAfterInflate;
+    const totalDeposit = prevRow ?  prevRow.totalDeposit + accumulatedOnDeposit + addToInvest : inputData.currMoney;
 
     let newRow = <RentMonthStats>{
       totalMonthNo: globalMonthNo,
@@ -45,12 +46,12 @@ export class CalculatorSerivce {
       addToInvest: addToInvest,
       totalDeposit: totalDeposit
     };
-
     return newRow
   }
 
-  private shouldMakeRentRow(row: RentMonthStats) {
-    return row.totalDeposit < this.inputData.flatPrice;
+  private shouldMakeRentRow(row: RentMonthStats, inputData:InputData) {
+    
+    return row ? row.totalDeposit < inputData.flatPrice : true;
   }
 
 
@@ -59,11 +60,11 @@ export class CalculatorSerivce {
     let totalMonth = startingMonthNo;
     let lastRow: TRow = null;
     do {
-      lastRow = makeRowFunc(settings, lastRow, currMonth, totalMonth);
+      lastRow = makeRowFunc(settings, this.inputData, lastRow, currMonth, totalMonth);
       rows.push(lastRow);
       currMonth++;
       totalMonth++;
-    } while (checkFinalFunc(lastRow));
+    } while (checkFinalFunc(lastRow, this.inputData));
 
     return rows
   }

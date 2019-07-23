@@ -11,15 +11,14 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 export class AddBlockDialogComponent implements OnInit {
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) private readonly data: any,
     @Inject(BLOCK_SERVICE_TOKEN) private readonly blockService: BlockService,
     private readonly dialogRef: MatDialogRef<AddBlockDialogComponent>) { }
 
 
 
   public onAddBlockClick(type: BlockTypes) {
-   this.blockService.addBlock(this.data, type);
-   this.dialogRef.close();
+    this.blockService.addBlock(type);
+    this.dialogRef.close();
   }
   public addRent() { this.onAddBlockClick(BlockTypes.Rent); }
   public addMort() { this.onAddBlockClick(BlockTypes.Mortgage); }

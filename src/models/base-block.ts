@@ -5,5 +5,4 @@ export enum BlockTypes{
 }
 export interface IBaseBlock{
 	type: BlockTypes;	
-    column: number;
 }

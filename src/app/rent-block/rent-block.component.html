@@ -11,4 +11,8 @@
             placeholder="Удорожание аренды, % в год" />
         <mat-hint>Через 10 лет аренда будет {{settings.rentIn10Years | number:'1.0-0'}}</mat-hint>
     </mat-form-field>
+
+    <div *ngIf="calculatedResult">
+        123
+    </div>
 </div>

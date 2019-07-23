@@ -16,7 +16,6 @@ export class ColumnBlockComponent implements OnInit {
     @Inject(BLOCK_SERVICE_TOKEN) private readonly blockService: BlockService,
     private readonly dialog: MatDialog) { }
 
-  @Input() public columnNumber: number;
 
   public blocks: IBaseBlock[] = [];
 
@@ -25,7 +24,7 @@ export class ColumnBlockComponent implements OnInit {
   }
 
   public onAddBlockClick() {
-    const dialogRef = this.dialog.open(AddBlockDialogComponent, { data: this.columnNumber });
+    const dialogRef = this.dialog.open(AddBlockDialogComponent);
 
   }
 }

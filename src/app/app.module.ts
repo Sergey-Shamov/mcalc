@@ -20,6 +20,7 @@ import { BlockService, BLOCK_SERVICE_TOKEN } from 'src/services/block-service';
 import { BlockComponent } from './block/block.component';
 import { CommonSettingsPanelComponent } from './common-settings-panel/common-settings-panel.component';
 import { MortBlockComponent } from './mort-block/mort-block.component';
+import { CalculatorSerivce, CALCULATOR_SERVICE_TOKEN } from '../services/calculator-serivce';
 
 const appRoutes: Routes = [
   {
@@ -79,7 +80,8 @@ const appRoutes: Routes = [
   providers: [
     { provide: INPUT_DATA_SERVICE_TOKEN, useClass: InputDataService },
     { provide: BLOCK_SERVICE_TOKEN, useClass: BlockService },
-    { provide: MAT_DIALOG_DATA, useValue: {} }
+    { provide: CALCULATOR_SERVICE_TOKEN, useClass: CalculatorSerivce },
+    { provide: MAT_DIALOG_DATA, useValue: {} },
   ],
   bootstrap: [AppComponent]
 })
