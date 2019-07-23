@@ -1,13 +1,13 @@
 :host{
 	display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
 	flex-grow: 1;
 	margin-right: 10px;
 }
 .column{
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
 	flex-grow: 1;
 }
 .column-footer{
