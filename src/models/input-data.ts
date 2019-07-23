@@ -13,6 +13,6 @@ export class InputData {
 
   public flatPrice = 7_000_000 //цена квартиры
 
-  public get propPriceIn10Years(): number { return CommonHelper.inflateYearly(this.flatPrice, this.propInflationY / 100, 120); }
-  public get canPayIn10Years(): number { return CommonHelper.inflateYearly(this.canPayM[0], this.payInflationY / 100, 120); }
+  public get propPriceIn10Years(): number { return CommonHelper.inflateYearly(this.flatPrice, this.propInflationY, 120); }
+  public get canPayIn10Years(): number { return CommonHelper.inflateYearly(this.canPayM[0], this.payInflationY, 120); }
 }

@@ -1,4 +1,4 @@
-import { VariableSettingsCalculator } from './../helpers/variable-settings-calculator';
+import { VariableSettingsCalculator } from '../helpers/variable-settings-calculator';
 import { InputData } from 'src/models/input-data';
 import { RentMonthStats } from 'src/models/rent-month-stats';
 import { InputDataService, INPUT_DATA_SERVICE_TOKEN } from './input-data-service';
@@ -9,7 +9,7 @@ import { SettingsHelper } from 'src/helpers/settings-helper';
 
 export const CALCULATOR_SERVICE_TOKEN = new InjectionToken('calculator_service');
 
-export class CalculatorSerivce {
+export class CalculatorService {
 
   private inputData: InputData
 

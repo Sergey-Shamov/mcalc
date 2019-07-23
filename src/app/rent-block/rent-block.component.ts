@@ -4,7 +4,7 @@ import { InputData } from 'src/models/input-data';
 import { Subscription } from 'rxjs';
 import { RentSettings } from '../../models/rent-settings';
 import { CommonHelper } from '../../helpers/сommon-helper';
-import { CalculatorSerivce, CALCULATOR_SERVICE_TOKEN } from '../../services/calculator-serivce';
+import { CalculatorService, CALCULATOR_SERVICE_TOKEN } from '../../services/calculator-service';
 import { RentMonthStats } from '../../models/rent-month-stats';
 
 @Component({
@@ -22,7 +22,7 @@ export class RentBlockComponent implements OnInit, OnDestroy {
 
   constructor(
     @Inject(INPUT_DATA_SERVICE_TOKEN) private readonly inputDataService: InputDataService,
-    @Inject(CALCULATOR_SERVICE_TOKEN) private readonly calculatorService: CalculatorSerivce
+    @Inject(CALCULATOR_SERVICE_TOKEN) private readonly calculatorService: CalculatorService
   ) { }
 
 
