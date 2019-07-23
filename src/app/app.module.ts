@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MatFormFieldModule, MatInputModule, MatListModule, MatButtonModule, MatDialogModule, MAT_DIALOG_DATA } from '@angular/material';
+import { MatFormFieldModule, MatInputModule, MatListModule, MatButtonModule, MatDialogModule, MAT_DIALOG_DATA, MatCardModule } from '@angular/material';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { FormsModule } from '@angular/forms';
 import { MortVsRentComponent } from './mort-vs-rent/mort-vs-rent.component';
@@ -73,6 +73,7 @@ const appRoutes: Routes = [
     MatListModule,
     MatButtonModule,
     MatDialogModule,
+    MatCardModule
   ],
   entryComponents: [AddBlockDialogComponent],
   providers: [

@@ -4,6 +4,7 @@
 }
 .column-container{
 	display: flex;
+	padding-top: 2vh;
 	flex-direction: row;
 }
 .column{

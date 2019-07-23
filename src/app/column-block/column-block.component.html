@@ -1,5 +1,12 @@
+<mat-card class="card">
 
+	<mat-card-content>
 
-<app-block *ngFor="let block of blocks" [blockType]='block.type'></app-block>
+		<app-block *ngFor="let block of blocks" [blockType]='block.type'></app-block>
 
-<button mat-flat-button color='primary' (click)='onAddBlockClick()'>+</button>
+	</mat-card-content>
+	<mat-card-footer class="footer">
+
+		<button mat-flat-button color='primary' (click)='onAddBlockClick()'>Новый расчет</button>
+	</mat-card-footer>
+</mat-card>

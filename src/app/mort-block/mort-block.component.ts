@@ -11,7 +11,7 @@ import { MortSettings } from 'src/models/mort-settings';
 })
 export class MortBlockComponent  implements OnInit, OnDestroy {
 
-  public input: InputData = null;
+  public input: InputData;
   public settings = new MortSettings();
 
   constructor(@Inject(INPUT_DATA_SERVICE_TOKEN) private readonly inputDataService: InputDataService) { }
