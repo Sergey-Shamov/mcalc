@@ -1,5 +1,5 @@
 
 
-<app-block *ngFor="let block of blocks" blockType={{block.type}}></app-block>
+<app-block *ngFor="let block of blocks" [blockType]='block.type'></app-block>
 
 <button mat-flat-button color='primary' (click)='onAddBlockClick()'>+</button>

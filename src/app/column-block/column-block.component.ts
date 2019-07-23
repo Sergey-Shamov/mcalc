@@ -21,13 +21,7 @@ export class ColumnBlockComponent implements OnInit {
   public blocks: IBaseBlock[] = [];
 
   ngOnInit() {
-    this.blockService.blocks.pipe(filter(block =>{
-      console.log(block);
-      console.log(this.columnNumber);
-      console.log(this.columnNumber === block.column);
-      return block.column === this.columnNumber;
-
-    })).subscribe(b => this.blocks.push(b));
+    this.blockService.blocks.pipe(filter(block => block.column === this.columnNumber)).subscribe(b => this.blocks.push(b));
   }
 
   public onAddBlockClick() {
