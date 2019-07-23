@@ -9,12 +9,15 @@ import { INPUT_DATA_SERVICE_TOKEN, InputDataService } from 'src/services/input-d
 })
 export class CommonSettingsPanelComponent implements OnInit {
 
-  public input: InputData = null;
+  public input: InputData = new InputData();
+
+
+  public get canPayMonth() { return this.input.canPayM[0]; }
+  public set canPayMonth(value: number) { this.input.canPayM[0] = value; }
 
   constructor(@Inject(INPUT_DATA_SERVICE_TOKEN) private readonly inputDataService: InputDataService) { }
 
   ngOnInit() {
-    this.inputDataService.push(new InputData());
   }
 
 }

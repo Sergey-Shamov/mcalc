@@ -9,9 +9,9 @@ export class BlockService {
 
     }
     
-    private _blocks = new Subject<IBaseBlock>();    //TODO: состояния сохраняются? нам не нужно хранить здесь
+    private _blocks = new Subject<IBaseBlock>();
+	public get blocks(){return this._blocks.asObservable();}
 
-	public get blocks(){return this._blocks;}
 
 
 	public addBlock(column: number, blockType: BlockTypes) { this._blocks.next({ column:column, type:blockType }) }
