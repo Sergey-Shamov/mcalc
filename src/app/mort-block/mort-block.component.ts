@@ -3,7 +3,7 @@ import { InputData } from 'src/models/input-data';
 import { INPUT_DATA_SERVICE_TOKEN, InputDataService } from 'src/services/input-data-service';
 import { Subscription } from 'rxjs';
 import { MortSettings } from 'src/models/mort-settings';
-import { CALCULATOR_SERVICE_TOKEN, CalculatorService } from 'src/services/calculator-service';
+import { CALCULATOR_SERVICE_TOKEN, CalculatorService, IColumnDefinition } from 'src/services/calculator-service';
 import { MortMonthStats } from '../../models/mort-month-stats';
 import { CommonHelper } from 'src/helpers/сommon-helper';
 
@@ -17,6 +17,13 @@ export class MortBlockComponent  implements OnInit, OnDestroy {
   public input: InputData;
   public settings = new MortSettings();
   public calculatedResult: MortMonthStats[];
+
+  private readonly displayedColumns: IColumnDefinition[] = [{colDef:"monthNo", colHead:"Месяц"}, 
+                            {colDef:"interest", colHead:"Уплата процентов"},    
+                            {colDef:"payComFees", colHead:"Коммунальные платежи"},    
+                            {colDef:"payTax", colHead:"Налоги"},    
+                            {colDef:"payDebt", colHead:"Уплата долга"}, 
+                            {colDef:"debt", colHead:"Остаток долга"}];
 
   public get resultText(): string {
     return this.calculatedResult == undefined
@@ -46,5 +53,10 @@ export class MortBlockComponent  implements OnInit, OnDestroy {
   private onDataChanged(data: InputData) { 
     this.input = data; 
     this.recalculate();
+  }
+
+  //TODO: временно
+  private sendData(){
+    this.calculatorService.setPaymentTableSource(this.calculatedResult, this.displayedColumns);
   }
 }

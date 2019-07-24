@@ -12,7 +12,9 @@
         <mat-hint>Через 10 лет аренда будет {{settings.rentIn10Years | number:'1.0-0'}}</mat-hint>
     </mat-form-field>
 
+    <button mat-flat-button color='primary' (click)='recalculate()'>Пересчитать</button>
     <div *ngIf="calculatedResult">
-        123
+        <div class="results-panel">{{resultText}}</div>
     </div>
+    <button mat-button (click)='sendData()'>Показать график платежей</button>
 </div>

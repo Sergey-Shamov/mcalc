@@ -10,3 +10,8 @@
 .column{
 	width:400px;
 }
+.calc-table-container{
+	display: block;
+	width: 95%;
+	justify-content: stretch;
+}

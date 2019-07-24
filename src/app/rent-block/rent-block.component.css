@@ -2,3 +2,9 @@
     display: flex;
     flex-direction: column;
 }
+
+.results-panel{
+    margin: 10pt;
+    padding: 10pt;
+    background-color: #FAFBFC;
+}

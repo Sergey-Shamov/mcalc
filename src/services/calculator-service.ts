@@ -8,6 +8,7 @@ import { CommonHelper } from 'src/helpers/сommon-helper';
 import { SettingsHelper } from 'src/helpers/settings-helper';
 import { MortMonthStats } from 'src/models/mort-month-stats';
 import { MortSettings } from 'src/models/mort-settings';
+import { Subject } from 'rxjs';
 
 export const CALCULATOR_SERVICE_TOKEN = new InjectionToken('calculator_service');
 
@@ -35,18 +36,19 @@ export class CalculatorService {
   // Расчет строки графика накопление+аренда
   private makeRentRow(rentSettings: RentSettings, inputData:InputData, prevRow: RentMonthStats, monthNo: number, globalMonthNo: number) {
     const settingsHelper = new SettingsHelper(monthNo, globalMonthNo);
-    const rentAfterInflate = settingsHelper.getCurrentRent(rentSettings.rentMonthCost, rentSettings.rentMonthRate);
+    const rentAfterInflate = settingsHelper.getCurrentRent(rentSettings.rentMonthCost, rentSettings.rentYearRate);
     
-    const accumulatedOnDeposit = prevRow ? settingsHelper.inflatePrice(prevRow.totalDeposit, rentSettings.investRateMFrac) - prevRow.totalDeposit : 0;
+    const prevDeposit = prevRow ? prevRow.totalDeposit : inputData.currMoney;
+    const interest = CommonHelper.getMonthInterest(prevDeposit, rentSettings.investRateY);
 
     const addToInvest = settingsHelper.getCurrentPay(inputData.canPayM, inputData.payInflationY) - rentAfterInflate;
-    const totalDeposit = prevRow ?  prevRow.totalDeposit + accumulatedOnDeposit + addToInvest : inputData.currMoney;
+    const totalDeposit = prevDeposit + interest + addToInvest;
 
     let newRow = <RentMonthStats>{
       totalMonthNo: globalMonthNo,
       monthNo: monthNo,
       payRent: rentAfterInflate,
-      interest: accumulatedOnDeposit,
+      interest: interest,
       addToInvest: addToInvest,
       totalDeposit: totalDeposit
     };
@@ -114,4 +116,22 @@ export class CalculatorService {
     return rows
   }
 
+
+  // TOOD: переместить в правильное расположение
+  public paymentTableData: Subject<IPaymentTableSource> = new Subject<IPaymentTableSource>();
+  public setPaymentTableSource(data, columnDefinitions: IColumnDefinition[]){
+    this.paymentTableData.next(<IPaymentTableSource> {dataSource: data, columnDefinitions: columnDefinitions});
+  }
+
+}
+
+//TODO: переместить в правильное расположение
+export interface IPaymentTableSource{
+  dataSource;
+  columnDefinitions: [{colDef:string, colHead: string}];
+}
+
+export interface IColumnDefinition{
+  colDef: string;
+  colHead: string;
 }

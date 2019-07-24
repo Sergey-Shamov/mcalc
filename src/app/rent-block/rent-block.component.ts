@@ -4,7 +4,7 @@ import { InputData } from 'src/models/input-data';
 import { Subscription } from 'rxjs';
 import { RentSettings } from '../../models/rent-settings';
 import { CommonHelper } from '../../helpers/сommon-helper';
-import { CalculatorService, CALCULATOR_SERVICE_TOKEN } from '../../services/calculator-service';
+import { CalculatorService, CALCULATOR_SERVICE_TOKEN, IColumnDefinition } from '../../services/calculator-service';
 import { RentMonthStats } from '../../models/rent-month-stats';
 
 @Component({
@@ -20,6 +20,20 @@ export class RentBlockComponent implements OnInit, OnDestroy {
 
   private dataSubscription: Subscription;
 
+  private readonly displayedColumns: IColumnDefinition[] = [{colDef:"monthNo", colHead:"Месяц"}, 
+                            {colDef:"payRent", colHead:"Уплата аренды"},    
+                            {colDef:"interest", colHead:"Капитализация процентов"},    
+                            {colDef:"addToInvest", colHead:"Внесено на вклад"},    
+                            {colDef:"totalDeposit", colHead:"Остаток по вкладу"}];  
+                            
+public get resultText(): string {
+  return this.calculatedResult == undefined
+    ? ""
+    : this.calculatedResult.length < 1
+      ? ""
+      : "Накопите на квартиру за " + CommonHelper.monthsToString(this.calculatedResult.length);
+}
+                            
   constructor(
     @Inject(INPUT_DATA_SERVICE_TOKEN) private readonly inputDataService: InputDataService,
     @Inject(CALCULATOR_SERVICE_TOKEN) private readonly calculatorService: CalculatorService
@@ -39,8 +53,15 @@ export class RentBlockComponent implements OnInit, OnDestroy {
 
   private onDataChanges(data: InputData) {
     this.input = data;
-    this.calculatedResult = this.calculatorService.calulateRent(this.settings, 0);
-
+    this.recalculate();
   }
 
+  private recalculate(){
+    this.calculatedResult = this.calculatorService.calulateRent(this.settings, 0);
+  }
+
+  //TODO: временно
+  private sendData(){
+    this.calculatorService.setPaymentTableSource(this.calculatedResult, this.displayedColumns);
+  }
 }

@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MatFormFieldModule, MatInputModule, MatListModule, MatButtonModule, MatDialogModule, MAT_DIALOG_DATA, MatCardModule } from '@angular/material';
+import { MatFormFieldModule, MatInputModule, MatListModule, MatButtonModule, MatDialogModule, MAT_DIALOG_DATA, MatCardModule, MatTableModule } from '@angular/material';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { FormsModule } from '@angular/forms';
 import { MortVsRentComponent } from './mort-vs-rent/mort-vs-rent.component';
@@ -21,6 +21,7 @@ import { BlockComponent } from './block/block.component';
 import { CommonSettingsPanelComponent } from './common-settings-panel/common-settings-panel.component';
 import { MortBlockComponent } from './mort-block/mort-block.component';
 import { CalculatorService, CALCULATOR_SERVICE_TOKEN } from '../services/calculator-service';
+import { PaymentTableComponent } from './payment-table/payment-table.component';
 
 const appRoutes: Routes = [
   {
@@ -60,7 +61,8 @@ const appRoutes: Routes = [
     AddBlockDialogComponent,
     BlockComponent,
     CommonSettingsPanelComponent,
-    MortBlockComponent
+    MortBlockComponent,
+    PaymentTableComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
@@ -74,7 +76,8 @@ const appRoutes: Routes = [
     MatListModule,
     MatButtonModule,
     MatDialogModule,
-    MatCardModule
+    MatCardModule,
+    MatTableModule
   ],
   entryComponents: [AddBlockDialogComponent],
   providers: [
