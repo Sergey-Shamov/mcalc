@@ -6,6 +6,8 @@ import { Inject, InjectionToken } from '@angular/core';
 import { RentSettings } from 'src/models/rent-settings';
 import { CommonHelper } from 'src/helpers/сommon-helper';
 import { SettingsHelper } from 'src/helpers/settings-helper';
+import { MortMonthStats } from 'src/models/mort-month-stats';
+import { MortSettings } from 'src/models/mort-settings';
 
 export const CALCULATOR_SERVICE_TOKEN = new InjectionToken('calculator_service');
 
@@ -17,6 +19,8 @@ export class CalculatorService {
   constructor(@Inject(INPUT_DATA_SERVICE_TOKEN) private readonly inputService: InputDataService) {
     inputService.inputData.subscribe(data => this.inputData = data);
   }
+
+  //#region Rent
 
   public calulateRent(rentSettings: RentSettings, startMonthNo: number): RentMonthStats[] {
     return this.calculatePaymentTable<RentMonthStats, RentSettings>(
@@ -54,6 +58,47 @@ export class CalculatorService {
     return row ? row.totalDeposit < inputData.flatPrice : true;
   }
 
+  //#endregion Rent
+
+  //#region Mortgage
+
+  public calculateMort(mortSettings: MortSettings, startMonthNo: number): MortMonthStats[] {
+    return this.calculatePaymentTable<MortMonthStats, MortSettings>(
+      mortSettings,
+      startMonthNo,
+      [],
+      this.makeMortRow,
+      this.shouldMakeMortRow
+    );
+  }
+
+    private makeMortRow(mortSettings: MortSettings, inputData:InputData, prevRow: MortMonthStats, monthNo: number, globalMonthNo: number): MortMonthStats {
+      const settingsHelper = new SettingsHelper(monthNo, globalMonthNo);
+
+      const prevDebt = prevRow ? prevRow.debt : inputData.flatPrice - inputData.currMoney;
+
+      const interest = CommonHelper.getMonthInterest(prevDebt, mortSettings.mortRate);
+      const comFees = CommonHelper.inflateYearly(mortSettings.comFeesM, mortSettings.comRateY, monthNo);
+      const tax = mortSettings.propTaxY / 12;
+      const payDebt = Math.min(prevDebt, settingsHelper.getCurrentPay(inputData.canPayM, inputData.payInflationY) - interest - comFees - tax);
+      const newDebt = prevDebt - payDebt;
+
+      let newRow = <MortMonthStats>{
+        monthNo: monthNo,
+        interest: interest,
+        payComFees: comFees,
+        payTax: tax,
+        payDebt: payDebt,
+        debt: newDebt
+      };
+      return newRow;
+    }
+    
+    private shouldMakeMortRow(row: MortMonthStats, inputData:InputData) {
+      return row ? row.debt > 0 : true;
+    }
+
+  //#endregion Mortgage
 
   private calculatePaymentTable<TRow, TBlockSettings>(settings: TBlockSettings, startingMonthNo: number, rows: TRow[], makeRowFunc, checkFinalFunc) {
     let currMonth = 0;

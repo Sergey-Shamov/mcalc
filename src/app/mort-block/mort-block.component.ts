@@ -4,6 +4,8 @@ import { INPUT_DATA_SERVICE_TOKEN, InputDataService } from 'src/services/input-d
 import { Subscription } from 'rxjs';
 import { MortSettings } from 'src/models/mort-settings';
 import { CALCULATOR_SERVICE_TOKEN, CalculatorService } from 'src/services/calculator-service';
+import { MortMonthStats } from '../../models/mort-month-stats';
+import { CommonHelper } from 'src/helpers/сommon-helper';
 
 @Component({
   selector: 'app-mort-block',
@@ -14,8 +16,18 @@ export class MortBlockComponent  implements OnInit, OnDestroy {
 
   public input: InputData;
   public settings = new MortSettings();
+  public calculatedResult: MortMonthStats[];
 
-  constructor(@Inject(INPUT_DATA_SERVICE_TOKEN) private readonly inputDataService: InputDataService,
+  public get resultText(): string {
+    return this.calculatedResult == undefined
+      ? ""
+      : this.calculatedResult.length < 1
+        ? ""
+        : "Выплата ипотеки займет " + CommonHelper.monthsToString(this.calculatedResult.length);
+  }
+
+  constructor(
+    @Inject(INPUT_DATA_SERVICE_TOKEN) private readonly inputDataService: InputDataService,
     @Inject(CALCULATOR_SERVICE_TOKEN) private readonly calculatorService: CalculatorService) { }
 
   private dataSubscription: Subscription;
@@ -27,5 +39,12 @@ export class MortBlockComponent  implements OnInit, OnDestroy {
     this.dataSubscription.unsubscribe();
   }
 
-  private onDataChanged(data: InputData) { this.input = data; }
+  public recalculate(){
+    this.calculatedResult = this.calculatorService.calculateMort(this.settings, 0);
+  }
+
+  private onDataChanged(data: InputData) { 
+    this.input = data; 
+    this.recalculate();
+  }
 }

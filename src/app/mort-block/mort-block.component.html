@@ -12,4 +12,8 @@
         <input matInput type='number' [(ngModel)]="settings.comRateY" placeholder="Удорожание коммуналки, % в год" />
         <mat-hint>Через 10 лет коммуналка будет {{settings.comFeesIn10Years | number:'1.0-0'}}</mat-hint>
     </mat-form-field>
+    <button mat-flat-button color='primary' (click)='recalculate()'>Пересчитать</button>
+    <div class="results-panel">
+        {{resultText}}
+    </div>
 </div>
