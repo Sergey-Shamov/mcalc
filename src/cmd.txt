@@ -1,0 +1,2 @@
+ng build --prod --base-href /mcalc/ --deploy-url /mcalc/
+angular-cli-ghpages --dir=dist/mortgage-calculator --branch gh-pages

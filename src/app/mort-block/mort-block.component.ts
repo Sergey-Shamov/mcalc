@@ -56,7 +56,7 @@ export class MortBlockComponent  implements OnInit, OnDestroy {
   }
 
   //TODO: временно
-  private sendData(){
+  public sendData(){
     this.calculatorService.setPaymentTableSource(this.calculatedResult, this.displayedColumns);
   }
 }

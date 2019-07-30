@@ -56,12 +56,12 @@ public get resultText(): string {
     this.recalculate();
   }
 
-  private recalculate(){
+  public recalculate(){
     this.calculatedResult = this.calculatorService.calulateRent(this.settings, 0);
   }
 
   //TODO: временно
-  private sendData(){
+  public sendData(){
     this.calculatorService.setPaymentTableSource(this.calculatedResult, this.displayedColumns);
   }
 }
