@@ -2,4 +2,11 @@
     height: 400px;
     overflow: auto;
   }
+
+.mat-cell {
+  padding: 0px 10px 0px 10px;
+}
+.mat-header-cell {
+  padding: 0px 10px 0px 10px;
+}
   

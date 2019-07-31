@@ -56,7 +56,7 @@ export class CalculatorService {
   }
 
   private shouldMakeRentRow(row: RentMonthStats, inputData:InputData) {
-    
+    CommonHelper.inflateYearly(inputData.flatPrice, inputData.propInflationY, row.totalMonthNo);
     return row ? row.totalDeposit < inputData.flatPrice : true;
   }
 
