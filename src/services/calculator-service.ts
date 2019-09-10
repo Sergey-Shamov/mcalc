@@ -2,7 +2,7 @@ import { VariableSettingsCalculator } from '../helpers/variable-settings-calcula
 import { InputData } from 'src/models/input-data';
 import { RentMonthStats } from 'src/models/rent-month-stats';
 import { InputDataService, INPUT_DATA_SERVICE_TOKEN } from './input-data-service';
-import { Inject, InjectionToken } from '@angular/core';
+import { Inject, InjectionToken, Injectable } from '@angular/core';
 import { RentSettings } from 'src/models/rent-settings';
 import { CommonHelper } from 'src/helpers/сommon-helper';
 import { SettingsHelper } from 'src/helpers/settings-helper';
@@ -12,6 +12,7 @@ import { Subject } from 'rxjs';
 
 export const CALCULATOR_SERVICE_TOKEN = new InjectionToken('calculator_service');
 
+@Injectable()
 export class CalculatorService {
 
   private inputData: InputData

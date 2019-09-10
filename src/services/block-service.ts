@@ -1,9 +1,10 @@
-import { InjectionToken } from '@angular/core';
+import { InjectionToken, Injectable } from '@angular/core';
 import { IBaseBlock, BlockTypes } from 'src/models/base-block';
 import { Observer, Observable, Subject } from 'rxjs';
 import { share } from 'rxjs/operators'
 
 export const BLOCK_SERVICE_TOKEN = new InjectionToken('block_service');
+@Injectable()
 export class BlockService {
 	constructor() {
 
