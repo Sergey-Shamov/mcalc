@@ -70,6 +70,8 @@ THE SOFTWARE.
 
 @angular/material/table
 
+@angular/material/tooltip
+
 @angular/platform-browser
 MIT
 
