@@ -2,17 +2,25 @@
     <mat-form-field>
         <input matInput type='number' [(ngModel)]="settings.mortRate" placeholder="Ставка по ипотеке, % в год" />  
     </mat-form-field>
-    <mat-form-field>
-        <input matInput type='number' [(ngModel)]="settings.propTaxY" placeholder="Налог, страховка, в год" />
-    </mat-form-field>
+    
+    <div>
+        <mat-form-field>
+            <input matInput type='number' [(ngModel)]="settings.propTaxY" placeholder="Налог, страховка, в год" />
+        </mat-form-field>
+        <i class="material-icons help-icon" matTooltip="Средняя сумма ежегодных выплат по страховкам и налогам за недвижимость">help_outline</i>
+    </div>
+
     <mat-form-field>
         <input matInput type='number' [(ngModel)]="settings.comFeesM" placeholder="Коммунальные платежи без счетчиков, мес." />
     </mat-form-field>
+
     <mat-form-field>
         <input matInput type='number' [(ngModel)]="settings.comRateY" placeholder="Удорожание коммуналки, % в год" />
         <mat-hint>Через 10 лет коммуналка будет {{settings.comFeesIn10Years | number:'1.0-0'}}</mat-hint>
     </mat-form-field>
-    <button mat-flat-button color='primary' (click)='recalculate()'>Пересчитать</button>
+
+    <button mat-flat-button color='primary' (click)='recalculate()' style="margin-top: 10px;">Пересчитать</button>
+
     <div class="results-panel">
         {{resultText}}
     </div>

@@ -22,7 +22,9 @@ export class PaymentTableComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.dataSubscription.unsubscribe(); this.columnDefinitions.slice();
+    this.dataSubscription.unsubscribe(); 
+    if (this.columnDefinitions != undefined)
+      this.columnDefinitions.slice();
   }
 
   onDataChanged(d: IPaymentTableSource): void {

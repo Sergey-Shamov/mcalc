@@ -22,6 +22,7 @@ import { CommonSettingsPanelComponent } from './common-settings-panel/common-set
 import { MortBlockComponent } from './mort-block/mort-block.component';
 import { CalculatorService, CALCULATOR_SERVICE_TOKEN } from '../services/calculator-service';
 import { PaymentTableComponent } from './payment-table/payment-table.component';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 const appRoutes: Routes = [
   {
@@ -77,7 +78,8 @@ const appRoutes: Routes = [
     MatButtonModule,
     MatDialogModule,
     MatCardModule,
-    MatTableModule
+    MatTableModule,
+    MatTooltipModule,
   ],
   entryComponents: [AddBlockDialogComponent],
   providers: [

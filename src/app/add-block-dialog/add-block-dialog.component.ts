@@ -17,6 +17,7 @@ export class AddBlockDialogComponent implements OnInit {
 
 
   public onAddBlockClick(type: BlockTypes) {
+    // todo: update common settings
     this.blockService.addBlock(type);
     this.dialogRef.close();
   }

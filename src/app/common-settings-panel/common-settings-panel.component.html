@@ -1,27 +1,39 @@
 <mat-card class="inputs-container">
 
     <mat-card-content>
-
         <mat-form-field class="input-field">
             <input matInput type='number' [(ngModel)]="input.flatPrice" placeholder="Цена квартиры" />
         </mat-form-field>
+        <i class="material-icons help-icon" matTooltip="Укажите цену рассматриваемой квартиры">help_outline</i>
         <mat-form-field class="input-field">
             <input matInput type='number' [(ngModel)]="input.currMoney" placeholder="Денег в наличии" />
         </mat-form-field>
+        <i class="material-icons help-icon" matTooltip="Сумма, которая пойдет на первый взнос, либо на вклад. Не включайте в эту сумму затраты на ремонт и т.п. расходы">
+            help_outline
+        </i>
         <mat-form-field class="input-field">
             <input matInput type='number' [(ngModel)]="canPayMonth" placeholder="Могу платить в месяц" />
         </mat-form-field>
+        <i class="material-icons help-icon" matTooltip="Сумма, которую вы готовы тратить каждый месяц на оплату квартиры (включая коммунальные платежи и страховки)">
+            help_outline
+        </i>
         <mat-form-field class="input-field">
             <input matInput type='number' [(ngModel)]="input.propInflationY"
                 placeholder="Удорожание квартиры, % в год" />
             <mat-hint>Через 10 лет квартира будет стоить {{input.propPriceIn10Years | number:'1.0-0'}}</mat-hint>
         </mat-form-field>
+        <i class="material-icons help-icon" matTooltip="Предположительная ставка удорожания недвижимости, которую вы рассматриваете.">
+            help_outline
+        </i>
         <mat-form-field class="input-field">
             <input matInput type='number' [(ngModel)]="input.payInflationY" placeholder="Увеличение платежа, % в год" />
             <mat-hint>Через 10 лет макс. платеж будет {{input.canPayIn10Years | number:'1.0-0'}}</mat-hint>
         </mat-form-field>
+        <i class="material-icons help-icon" matTooltip="Укажите положительное значение, если вы готовы со временем тратить больше. Если вы хотите со временем тратить меньше, поставьте отрицательное значение">
+            help_outline
+        </i>
     </mat-card-content>
     <mat-card-footer class="footer">
-        <button mat-flat-button color='primary' (onclick)="applyInput">Пересчитать</button>
+        <button mat-flat-button color='primary' (onclick)="applyInput">Пересчитать</button> <!--TODO: Отображать только при грязной модели-->
     </mat-card-footer>
 </mat-card>
